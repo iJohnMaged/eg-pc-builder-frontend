@@ -6,7 +6,7 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        ABeeZee: ["ABeeZee", "sans-serif"],
+        Quicksand: ["Quicksand", "sans-serif"],
       },
     },
   },

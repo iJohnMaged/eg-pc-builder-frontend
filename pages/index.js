@@ -1,9 +1,9 @@
 import { useReducer } from "react";
 import Head from "next/head";
-import NavBar from "../components/NavBar";
-import Builder from "../components/Builder";
-import reducer from "../components/reducer";
-import BuilderContext from "../components/BuilderContext";
+import NavBar from "../components/Nav/NavBar";
+import Builder from "../components/SimpleBuilder/Builder";
+import reducer from "../components/Reducer/reducer";
+import BuilderContext from "../components/Context/BuilderContext";
 import FIELDS from "../data/initialFields";
 
 export default function Home({ data }) {
@@ -16,11 +16,11 @@ export default function Home({ data }) {
   return (
     <BuilderContext.Provider value={{ state: state, dispatch: dispatch }}>
       <Head>
-        <title>EG PC Part Picker</title>
+        <title>EG PC Builder</title>
       </Head>
-      <div className="scroll-smooth">
+      <div className="scroll-smooth font-Quicksand">
         <header className="text-white bg-neutral-800">
-          <div className="px-8 py-4 text-3xl font-bold">EG PC Part Picker</div>
+          <div className="px-8 py-4 text-3xl font-bold">EG PC Builder</div>
           <NavBar />
         </header>
         <main className="mt-8">

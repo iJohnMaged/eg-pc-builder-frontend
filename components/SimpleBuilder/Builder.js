@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import BuilderSelect from "./BuilderSelect";
-import BuilderContext from "./BuilderContext";
+import BuilderContext from "../Context/BuilderContext";
 
 export default function Builder() {
   const value = useContext(BuilderContext);

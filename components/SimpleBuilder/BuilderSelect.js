@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import Select, { createFilter } from "react-select";
 import Image from "next/image";
-import BuilderContext from "./BuilderContext";
+import BuilderContext from "../Context/BuilderContext";
 import CustomOption from "./CustomSelectOption";
 
 const DefaultPlaceholder = ({ label, icon }) => (
