@@ -1,4 +1,6 @@
-const FIELDS = [
+import { PcPartField } from "./types";
+
+const FIELDS: PcPartField[] = [
   {
     name: "CPU",
     id: 0,

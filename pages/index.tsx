@@ -1,20 +1,26 @@
 import { useReducer } from "react";
+import { GetServerSideProps } from "next";
 import Head from "next/head";
 import NavBar from "../components/Nav/NavBar";
-import Builder from "../components/SimpleBuilder/Builder";
+import SimpleBuilder from "../components/SimpleBuilder/SimpleBuilder";
 import reducer from "../components/Reducer/reducer";
-import BuilderContext from "../components/Context/BuilderContext";
+import SimpleBuilderContext from "../components/Context/BuilderContext";
 import FIELDS from "../data/initialFields";
+import { PartsData, SimpleBuilderReducerState } from "../data/types";
 
-export default function Home({ data }) {
-  const [state, dispatch] = useReducer(reducer, {
-    selected: {},
+export default function Home(props: PartsData) {
+  const initialState: SimpleBuilderReducerState = {
     fields: FIELDS,
-    options: data,
-  });
+    selected: {},
+    options: {
+      data: props.data,
+    },
+  };
+
+  const [state, dispatch] = useReducer(reducer, initialState);
 
   return (
-    <BuilderContext.Provider value={{ state: state, dispatch: dispatch }}>
+    <SimpleBuilderContext.Provider value={{ state: state, dispatch: dispatch }}>
       <Head>
         <title>EG PC Builder</title>
       </Head>
@@ -24,7 +30,7 @@ export default function Home({ data }) {
           <NavBar />
         </header>
         <main className="mt-8">
-          <Builder />
+          <SimpleBuilder />
           {Object.keys(state.selected).length > 0 && (
             <div className="text-center font-bold text-3xl text-emerald-400 mt-4">
               <span>Total: </span>
@@ -39,18 +45,19 @@ export default function Home({ data }) {
           )}
         </main>
       </div>
-    </BuilderContext.Provider>
+    </SimpleBuilderContext.Provider>
   );
 }
-
-export async function getServerSideProps({ req }) {
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const { req } = context;
   const protocol = req.headers["x-forwarded-proto"] || "http";
   const baseUrl = req ? `${protocol}://${req.headers.host}` : "";
   const res = await fetch(baseUrl + "/api/pc-parts");
   const data = await res.json();
+
   return {
     props: {
-      data,
+      data: data.parts,
     },
   };
-}
+};

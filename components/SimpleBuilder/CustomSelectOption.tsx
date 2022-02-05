@@ -1,9 +1,16 @@
-import { components } from "react-select";
+import React from "react";
+import { components, OptionProps } from "react-select";
 import Image from "next/image";
+import { Part } from "../../data/types";
 
-export default function CustomOption({ children, ...props }) {
+interface Props {
+  children: React.ReactNode;
+  innerProps: any;
+  data: Part;
+}
+export default function CustomOption({ children, ...props }: Props) {
   const { onMouseMove, onMouseOver, ...rest } = props.innerProps;
-  const newProps = { ...props, innerProps: rest };
+  const newProps = { ...(props as OptionProps), innerProps: rest };
   return (
     <components.Option {...newProps}>
       <div className="flex items-center gap-x-2">

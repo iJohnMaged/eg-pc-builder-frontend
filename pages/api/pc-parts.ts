@@ -1,8 +1,9 @@
-const { Pool } = require("pg");
+import { NextApiRequest, NextApiResponse } from "next";
+import { Pool } from "pg";
 
 const pool = new Pool();
 
-export default async function handler(req, res) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const cateogiresQuery = `SELECT * FROM "Category"`;
   const partsCategory = `SELECT * FROM "Part"`;
   const cateogiresResult = await pool.query(cateogiresQuery);
@@ -22,6 +23,6 @@ export default async function handler(req, res) {
 
   res.setHeader("Cache-Control", "s-maxage=1, stale-while-revalidate");
   res.status(200).json({
-    data: parts,
+    parts,
   });
 }

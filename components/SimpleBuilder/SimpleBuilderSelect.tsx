@@ -1,24 +1,35 @@
 import { useContext } from "react";
 import Select, { createFilter } from "react-select";
 import Image from "next/image";
-import BuilderContext from "../Context/BuilderContext";
+import SimpleBuilderContext from "../Context/BuilderContext";
 import CustomOption from "./CustomSelectOption";
+import { PcPartField, ActionType } from "../../data/types";
 
-const DefaultPlaceholder = ({ label, icon }) => (
+const DefaultPlaceholder = ({
+  label,
+  icon,
+}: {
+  label: string;
+  icon: string;
+}) => (
   <div className="flex items-center gap-x-2">
     <Image src={icon} width={25} height={25} alt={label} className="pr-2" />
     {label}
   </div>
 );
 
-export default function BuilderSelect({ field, isClearable }) {
-  const value = useContext(BuilderContext);
+interface Props {
+  field: PcPartField;
+}
+
+export default function SimpleBuilderSelect({ field }: Props) {
+  const value = useContext(SimpleBuilderContext);
   const customStyles = {
-    menu: (provided) => ({
+    menu: (provided: any) => ({
       ...provided,
       background: "#1A1A1A",
     }),
-    control: (provided, state) => ({
+    control: (provided: any, state: any) => ({
       ...provided,
       border: state.isFocused ? "2px solid black" : "2px solid #e1e1e1",
       outline: "none",
@@ -27,7 +38,7 @@ export default function BuilderSelect({ field, isClearable }) {
         border: state.isFocused ? "2px solid black" : "2px solid #e1e1e1",
       },
     }),
-    option: (provided, state) => ({
+    option: (provided: any, state: any) => ({
       ...provided,
       background: "#1A1A1A",
       color: "white",
@@ -37,7 +48,7 @@ export default function BuilderSelect({ field, isClearable }) {
         color: "white",
       },
     }),
-    singleValue: (provided, state) => {
+    singleValue: (provided: any, state: any) => {
       const opacity = state.isDisabled ? 0.5 : 1;
       const transition = "opacity 300ms";
       return { ...provided, opacity, transition };
@@ -50,7 +61,7 @@ export default function BuilderSelect({ field, isClearable }) {
         htmlFor={field.name}
       >
         {field.name}{" "}
-        {value.state.selected[field.name.toLowerCase()] && (
+        {value.state && value.state.selected[field.name.toLowerCase()] && (
           <span className="font-bolder italic text-emerald-500">
             ({value.state.selected[field.name.toLowerCase()].price} EGP)
           </span>
@@ -60,10 +71,12 @@ export default function BuilderSelect({ field, isClearable }) {
         <Select
           filterOption={createFilter({ ignoreAccents: false })}
           inputId={field.name}
-          options={value.state.options.data[field.name.toLowerCase()]}
+          options={
+            value.state && value.state.options.data[field.name.toLowerCase()]
+          }
           styles={customStyles}
           getOptionLabel={(option) => `${option.name} - ${option.price} EGP`}
-          getOptionValue={(option) => option.id}
+          getOptionValue={(option) => `${option.id}`}
           placeholder={
             <DefaultPlaceholder
               label={"Select " + field.name}
@@ -71,9 +84,12 @@ export default function BuilderSelect({ field, isClearable }) {
             />
           }
           onChange={(option, meta) => {
+            if (!value.dispatch) {
+              return;
+            }
             if (meta.action === "select-option") {
               value.dispatch({
-                type: "ADD_COMPONENT",
+                type: ActionType.ADD_COMPONENT,
                 payload: {
                   type: field.name.toLowerCase(),
                   data: option,
@@ -81,7 +97,7 @@ export default function BuilderSelect({ field, isClearable }) {
               });
             } else if (meta.action === "clear") {
               value.dispatch({
-                type: "REMOVE_COMPONENT",
+                type: ActionType.REMOVE_COMPONENT,
                 payload: {
                   type: field.name.toLowerCase(),
                 },
@@ -91,7 +107,7 @@ export default function BuilderSelect({ field, isClearable }) {
           components={{ Option: CustomOption }}
           menuPlacement="auto"
           className="w-[550px] text-sm font-bold"
-          isClearable={isClearable ? isClearable : false}
+          isClearable
         />
         {field.canAdd && (
           <Image
@@ -100,14 +116,6 @@ export default function BuilderSelect({ field, isClearable }) {
             height={25}
             alt={"cpu"}
             className="cursor-pointer"
-            onClick={() => {
-              value.dispatch({
-                type: "ADD_FIELD",
-                payload: {
-                  type: field.name,
-                },
-              });
-            }}
           />
         )}
       </div>
