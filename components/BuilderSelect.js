@@ -1,35 +1,8 @@
 import { useContext } from "react";
-import Select, { components } from "react-select";
+import Select, { components, createFilter } from "react-select";
 import Image from "next/image";
 import BuilderContext from "./BuilderContext";
-
-const { Option } = components;
-const mapping = {
-  cpu: "CPU",
-  case: "Cases",
-  fan: "Fans",
-  gpu: "GPU",
-  motherboard: "Motherboards",
-  powersupply: "Power Supply",
-  ram: "Ram",
-};
-
-const IconOption = (props) => (
-  <Option {...props}>
-    <span className="flex items-center gap-x-4">
-      {props.data.imageUrl && (
-        <Image
-          src={props.data.imageUrl}
-          width={25}
-          height={25}
-          alt={"cpu"}
-          className="pr-2"
-        />
-      )}
-      {props.data.name} - {props.data.price} EGP
-    </span>
-  </Option>
-);
+import CustomOption from "./CustomSelectOption";
 
 const DefaultPlaceholder = ({ label, type }) => (
   <div className="flex items-center gap-x-2">
@@ -91,6 +64,7 @@ export default function BuilderSelect({ label, isClearable }) {
       </label>
       <div className="flex gap-x-4">
         <Select
+          filterOption={createFilter({ ignoreAccents: false })}
           inputId={label}
           options={value.state.options.data[label.toLowerCase()]}
           styles={customStyles}
@@ -120,16 +94,10 @@ export default function BuilderSelect({ label, isClearable }) {
               });
             }
           }}
-          components={{ Option: IconOption }}
+          components={{ Option: CustomOption }}
           menuPlacement="auto"
           className="w-[550px] text-sm font-bold"
           isClearable={isClearable ? isClearable : false}
-          filterOption={(option, inputValue) => {
-            return (
-              option.label.toLowerCase().indexOf(inputValue.toLowerCase()) !==
-              -1
-            );
-          }}
         />
         <Image
           src={"/icons/plus.svg"}
