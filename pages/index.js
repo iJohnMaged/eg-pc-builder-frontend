@@ -4,11 +4,12 @@ import NavBar from "../components/NavBar";
 import Builder from "../components/Builder";
 import reducer from "../components/reducer";
 import BuilderContext from "../components/BuilderContext";
+import FIELDS from "../data/initialFields";
 
 export default function Home({ data }) {
   const [state, dispatch] = useReducer(reducer, {
     selected: {},
-    fields: ["CPU"],
+    fields: FIELDS,
     options: data,
   });
 
@@ -17,25 +18,27 @@ export default function Home({ data }) {
       <Head>
         <title>EG PC Part Picker</title>
       </Head>
-      <header className="text-white bg-neutral-800">
-        <div className="px-8 py-4 text-3xl font-bold">EG PC Part Picker</div>
-        <NavBar />
-      </header>
-      <main className="mt-8">
-        <Builder />
-        {Object.keys(state.selected).length > 0 && (
-          <div className="text-center font-bold text-3xl text-emerald-400 mt-4">
-            <span>Total: </span>
-            {Object.keys(state.selected).reduce((acc, key) => {
-              if (state.selected[key] && state.selected[key].price) {
-                return acc + state.selected[key].price;
-              }
-              return acc;
-            }, 0)}{" "}
-            EGP
-          </div>
-        )}
-      </main>
+      <div className="scroll-smooth">
+        <header className="text-white bg-neutral-800">
+          <div className="px-8 py-4 text-3xl font-bold">EG PC Part Picker</div>
+          <NavBar />
+        </header>
+        <main className="mt-8">
+          <Builder />
+          {Object.keys(state.selected).length > 0 && (
+            <div className="text-center font-bold text-3xl text-emerald-400 mt-4">
+              <span>Total: </span>
+              {Object.keys(state.selected).reduce((acc, key) => {
+                if (state.selected[key] && state.selected[key].price) {
+                  return acc + state.selected[key].price;
+                }
+                return acc;
+              }, 0)}{" "}
+              EGP
+            </div>
+          )}
+        </main>
+      </div>
     </BuilderContext.Provider>
   );
 }

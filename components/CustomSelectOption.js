@@ -13,7 +13,7 @@ export default function CustomOption({ children, ...props }) {
               src={props.data.imageUrl}
               width={48}
               height={48}
-              alt={"cpu"}
+              alt={props.data.name}
               quality={50}
             />
           )}

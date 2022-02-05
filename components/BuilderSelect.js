@@ -1,23 +1,17 @@
 import { useContext } from "react";
-import Select, { components, createFilter } from "react-select";
+import Select, { createFilter } from "react-select";
 import Image from "next/image";
 import BuilderContext from "./BuilderContext";
 import CustomOption from "./CustomSelectOption";
 
-const DefaultPlaceholder = ({ label, type }) => (
+const DefaultPlaceholder = ({ label, icon }) => (
   <div className="flex items-center gap-x-2">
-    <Image
-      src={`/icons/${type}.svg`}
-      width={25}
-      height={25}
-      alt={"cpu"}
-      className="pr-2"
-    />
+    <Image src={icon} width={25} height={25} alt={label} className="pr-2" />
     {label}
   </div>
 );
 
-export default function BuilderSelect({ label, isClearable }) {
+export default function BuilderSelect({ field, isClearable }) {
   const value = useContext(BuilderContext);
   const customStyles = {
     menu: (provided) => ({
@@ -53,27 +47,27 @@ export default function BuilderSelect({ label, isClearable }) {
     <div className="flex flex-col gap-y-2">
       <label
         className="text-base font-semibold text-neutral-800"
-        htmlFor={label}
+        htmlFor={field.name}
       >
-        {label}{" "}
-        {value.state.selected[label.toLowerCase()] && (
+        {field.name}{" "}
+        {value.state.selected[field.name.toLowerCase()] && (
           <span className="font-bolder italic text-emerald-500">
-            ({value.state.selected[label.toLowerCase()].price} EGP)
+            ({value.state.selected[field.name.toLowerCase()].price} EGP)
           </span>
         )}
       </label>
       <div className="flex gap-x-4">
         <Select
           filterOption={createFilter({ ignoreAccents: false })}
-          inputId={label}
-          options={value.state.options.data[label.toLowerCase()]}
+          inputId={field.name}
+          options={value.state.options.data[field.name.toLowerCase()]}
           styles={customStyles}
           getOptionLabel={(option) => `${option.name} - ${option.price} EGP`}
           getOptionValue={(option) => option.id}
           placeholder={
             <DefaultPlaceholder
-              label={"Select a " + label}
-              type={label.toLowerCase()}
+              label={"Select " + field.name}
+              icon={field.icon}
             />
           }
           onChange={(option, meta) => {
@@ -81,7 +75,7 @@ export default function BuilderSelect({ label, isClearable }) {
               value.dispatch({
                 type: "ADD_COMPONENT",
                 payload: {
-                  type: label.toLowerCase(),
+                  type: field.name.toLowerCase(),
                   data: option,
                 },
               });
@@ -89,7 +83,7 @@ export default function BuilderSelect({ label, isClearable }) {
               value.dispatch({
                 type: "REMOVE_COMPONENT",
                 payload: {
-                  type: label.toLowerCase(),
+                  type: field.name.toLowerCase(),
                 },
               });
             }
@@ -99,21 +93,23 @@ export default function BuilderSelect({ label, isClearable }) {
           className="w-[550px] text-sm font-bold"
           isClearable={isClearable ? isClearable : false}
         />
-        <Image
-          src={"/icons/plus.svg"}
-          width={25}
-          height={25}
-          alt={"cpu"}
-          className="cursor-pointer"
-          onClick={() => {
-            value.dispatch({
-              type: "ADD_FIELD",
-              payload: {
-                type: label,
-              },
-            });
-          }}
-        />
+        {field.canAdd && (
+          <Image
+            src={"/icons/plus.svg"}
+            width={25}
+            height={25}
+            alt={"cpu"}
+            className="cursor-pointer"
+            onClick={() => {
+              value.dispatch({
+                type: "ADD_FIELD",
+                payload: {
+                  type: field.name,
+                },
+              });
+            }}
+          />
+        )}
       </div>
     </div>
   );
