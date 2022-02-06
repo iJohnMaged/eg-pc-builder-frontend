@@ -24,6 +24,7 @@ export interface PcPartField {
     name: string;
     canAdd: boolean;
     icon: string;
+    dataField: string;
 }
 
 interface CategoryParts {

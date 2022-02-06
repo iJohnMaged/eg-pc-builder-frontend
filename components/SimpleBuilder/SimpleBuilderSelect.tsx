@@ -74,9 +74,7 @@ export default function SimpleBuilderSelect({ field }: Props) {
           filterOption={createFilter({ ignoreAccents: false })}
           inputId={uniqueId}
           instanceId={uniqueId}
-          options={
-            value.state && value.state.options.data[field.name.toLowerCase()]
-          }
+          options={value.state && value.state.options.data[field.dataField]}
           styles={customStyles}
           getOptionLabel={(option) => `${option.name} - ${option.price} EGP`}
           getOptionValue={(option) => `${option.id}`}
