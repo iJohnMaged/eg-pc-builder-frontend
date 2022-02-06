@@ -29,7 +29,7 @@ export default function Home(props: PartsData) {
           <div className="px-8 py-4 text-3xl font-bold">EG PC Builder</div>
           <NavBar />
         </header>
-        <main className="mt-8">
+        <main className="py-8">
           <SimpleBuilder />
           {Object.keys(state.selected).length > 0 && (
             <div className="text-center font-bold text-3xl text-emerald-400 mt-4">
