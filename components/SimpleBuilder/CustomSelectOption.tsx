@@ -21,7 +21,7 @@ export default function CustomOption({ children, ...props }: Props) {
               width={48}
               height={48}
               alt={props.data.name}
-              quality={50}
+              unoptimized={true}
             />
           )}
         </div>
