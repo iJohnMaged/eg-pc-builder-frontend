@@ -2,7 +2,6 @@ import "../styles/globals.css";
 import { AppProps } from "next/app";
 import Head from "next/head";
 import NavBar from "../components/Nav/NavBar";
-import Router from "next/router";
 import NextNprogress from "nextjs-progressbar";
 
 function MyApp({ Component, pageProps }: AppProps) {
