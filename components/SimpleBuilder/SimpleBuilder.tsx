@@ -6,14 +6,24 @@ export default function SimpleBuilder() {
   const value = useContext(SimpleBuilderContext);
 
   return (
-    <div className="flex flex-col items-start w-max mx-auto gap-4 text-xl font-ABeeZee text-neutral-700 border-2 p-8 rounded-2xl shadow-2xl">
-      {value.state &&
-        value.state.fields.map((field) => (
-          <SimpleBuilderSelect
-            field={field}
-            key={`${field.name}-${field.id}`}
-          />
-        ))}
+    <div className="flex flex-col items-start w-max mx-auto gap-4 text-xl font-ABeeZee text-neutral-700 border-4 rounded-lg shadow-hardShadow bg-white border-neutral-900">
+      <div className="text-black border-b-4 border-black w-full px-8 py-4 font-extrabold flex gap-4">
+        <div>Builder...</div>
+        <div className="w-full flex flex-col justify-between">
+          <div className="h-[4px] w-full bg-black rounded-full"></div>
+          <div className="h-[4px] w-full bg-black rounded-full"></div>
+          <div className="h-[4px] w-full bg-black rounded-full"></div>
+        </div>
+      </div>
+      <div className="px-8 pb-4 flex flex-col gap-4">
+        {value.state &&
+          value.state.fields.map((field) => (
+            <SimpleBuilderSelect
+              field={field}
+              key={`${field.name}-${field.id}`}
+            />
+          ))}
+      </div>
     </div>
   );
 }
