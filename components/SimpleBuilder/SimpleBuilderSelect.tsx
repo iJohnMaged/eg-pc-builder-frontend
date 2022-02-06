@@ -24,6 +24,8 @@ interface Props {
 
 export default function SimpleBuilderSelect({ field }: Props) {
   const value = useContext(SimpleBuilderContext);
+  const uniqueId = `${field.name}-${field.id}`;
+
   const customStyles = {
     menu: (provided: any) => ({
       ...provided,
@@ -58,19 +60,20 @@ export default function SimpleBuilderSelect({ field }: Props) {
     <div className="flex flex-col gap-y-2">
       <label
         className="text-base font-semibold text-neutral-800"
-        htmlFor={field.name}
+        htmlFor={uniqueId}
       >
         {field.name}{" "}
-        {value.state && value.state.selected[`${field.name}-${field.id}`] && (
+        {value.state && value.state.selected[uniqueId] && (
           <span className="font-bolder italic text-emerald-500">
-            ({value.state.selected[`${field.name}-${field.id}`].price} EGP)
+            ({value.state.selected[uniqueId].price} EGP)
           </span>
         )}
       </label>
       <div className="flex gap-x-4">
         <Select
           filterOption={createFilter({ ignoreAccents: false })}
-          inputId={field.name}
+          inputId={uniqueId}
+          instanceId={uniqueId}
           options={
             value.state && value.state.options.data[field.name.toLowerCase()]
           }
