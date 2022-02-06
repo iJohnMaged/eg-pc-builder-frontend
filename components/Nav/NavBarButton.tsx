@@ -1,6 +1,6 @@
 import { NavSelectedTab } from "../../data/types";
 import classNames from "classnames";
-import Link from "next/link";
+import { useRouter } from "next/router";
 
 interface Props {
   text: string;
@@ -24,6 +24,8 @@ const NavBarButton = ({
   selectedTab,
   disabled,
 }: Props) => {
+  const router = useRouter();
+
   const classes = classNames({
     // Basic classes, not selected
     "px-4 py-2 cursor-pointer text-white": true,
@@ -45,15 +47,10 @@ const NavBarButton = ({
       disabled={disabled}
       onClick={() => {
         setSelectedTab(type);
+        router.push(`${TabToLink[type]}`, undefined, { shallow: true });
       }}
     >
-      {disabled ? (
-        text
-      ) : (
-        <Link href={TabToLink[type]}>
-          <a>{text}</a>
-        </Link>
-      )}
+      {text}
     </button>
   );
 };

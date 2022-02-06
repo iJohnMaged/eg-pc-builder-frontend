@@ -1,11 +1,20 @@
 import "../styles/globals.css";
-
 import { AppProps } from "next/app";
 import Head from "next/head";
 import NavBar from "../components/Nav/NavBar";
+import Router from "next/router";
+import NextNprogress from "nextjs-progressbar";
+
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <>
+      <NextNprogress
+        color="#29D"
+        startPosition={0.3}
+        stopDelayMs={200}
+        height={2}
+        showOnShallow={true}
+      />
       <Head>
         <title>EG PC Builder</title>
       </Head>
