@@ -41,7 +41,7 @@ export interface SelectedParts {
 export enum ActionType {
     ADD_COMPONENT = 'ADD_COMPONENT',
     REMOVE_COMPONENT = 'REMOVE_COMPONENT',
-    AddPartField = 'ADD_PART',
+    ADD_PART_FIELD = 'ADD_PART_FIELD',
 }
 
 export interface SimpleBuilderReducerState {

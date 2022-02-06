@@ -61,9 +61,9 @@ export default function SimpleBuilderSelect({ field }: Props) {
         htmlFor={field.name}
       >
         {field.name}{" "}
-        {value.state && value.state.selected[field.name.toLowerCase()] && (
+        {value.state && value.state.selected[`${field.name}-${field.id}`] && (
           <span className="font-bolder italic text-emerald-500">
-            ({value.state.selected[field.name.toLowerCase()].price} EGP)
+            ({value.state.selected[`${field.name}-${field.id}`].price} EGP)
           </span>
         )}
       </label>
@@ -91,7 +91,7 @@ export default function SimpleBuilderSelect({ field }: Props) {
               value.dispatch({
                 type: ActionType.ADD_COMPONENT,
                 payload: {
-                  type: field.name.toLowerCase(),
+                  field,
                   data: option,
                 },
               });
@@ -99,7 +99,7 @@ export default function SimpleBuilderSelect({ field }: Props) {
               value.dispatch({
                 type: ActionType.REMOVE_COMPONENT,
                 payload: {
-                  type: field.name.toLowerCase(),
+                  field,
                 },
               });
             }
@@ -116,6 +116,17 @@ export default function SimpleBuilderSelect({ field }: Props) {
             height={25}
             alt={"cpu"}
             className="cursor-pointer"
+            onClick={() => {
+              if (!value.dispatch) {
+                return;
+              }
+              value.dispatch({
+                type: ActionType.ADD_PART_FIELD,
+                payload: {
+                  field,
+                },
+              });
+            }}
           />
         )}
       </div>
