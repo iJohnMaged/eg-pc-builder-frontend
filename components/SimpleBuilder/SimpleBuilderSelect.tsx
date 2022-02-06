@@ -64,7 +64,7 @@ export default function SimpleBuilderSelect({ field }: Props) {
       >
         {field.name}{" "}
         {value.state && value.state.selected[uniqueId] && (
-          <span className="font-bolder italic text-emerald-500">
+          <span className="font-bolder italic text-purple-600">
             ({value.state.selected[uniqueId].price} EGP)
           </span>
         )}
@@ -131,6 +131,18 @@ export default function SimpleBuilderSelect({ field }: Props) {
           />
         )}
       </div>
+      {value.state && value.state.selected[uniqueId] && (
+        <div className="text-xs italic max-w-[450px] text-ellipsis overflow-hidden whitespace-nowrap">
+          <a
+            href={value.state.selected[uniqueId].url}
+            target="_blank"
+            rel="noreferrer"
+            className="text-purple-500"
+          >
+            {value.state.selected[uniqueId].url}
+          </a>
+        </div>
+      )}
     </div>
   );
 }

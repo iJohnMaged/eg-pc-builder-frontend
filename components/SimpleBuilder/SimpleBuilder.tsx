@@ -23,6 +23,22 @@ export default function SimpleBuilder() {
               key={`${field.name}-${field.id}`}
             />
           ))}
+        {value.state && Object.keys(value.state.selected).length > 0 && (
+          <div className="text-center font-bold text-3xl text-purple-600 mt-4">
+            <span>Total: </span>
+            {Object.keys(value.state.selected).reduce((acc, key) => {
+              if (!value.state) return acc;
+              if (
+                value.state.selected[key] &&
+                value.state.selected[key].price
+              ) {
+                return acc + value.state.selected[key].price;
+              }
+              return acc;
+            }, 0)}{" "}
+            EGP
+          </div>
+        )}
       </div>
     </div>
   );

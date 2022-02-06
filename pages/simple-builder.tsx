@@ -19,23 +19,11 @@ const SimpleBuilderPage = (props: PartsData) => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   return (
-    <main className="py-4 bg-repeat bg-center bg-checkboardPattern bg-clip-border bg-origin-padding bg-scroll bg-20px bg-opacity-50 flex-grow">
+    <main className="py-4 bg-repeat bg-center bg-checkboardPattern bg-clip-border bg-origin-padding bg-fixed bg-20px bg-opacity-50 flex-grow">
       <SimpleBuilderContext.Provider
         value={{ state: state, dispatch: dispatch }}
       >
         <SimpleBuilder />
-        {Object.keys(state.selected).length > 0 && (
-          <div className="text-center font-bold text-3xl text-emerald-400 mt-4">
-            <span>Total: </span>
-            {Object.keys(state.selected).reduce((acc, key) => {
-              if (state.selected[key] && state.selected[key].price) {
-                return acc + state.selected[key].price;
-              }
-              return acc;
-            }, 0)}{" "}
-            EGP
-          </div>
-        )}
       </SimpleBuilderContext.Provider>
     </main>
   );
