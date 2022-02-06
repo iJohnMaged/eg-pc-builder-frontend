@@ -1,5 +1,6 @@
 import { NavSelectedTab } from "../../data/types";
 import classNames from "classnames";
+import Link from "next/link";
 
 interface Props {
   text: string;
@@ -8,6 +9,13 @@ interface Props {
   selectedTab: NavSelectedTab;
   disabled?: boolean;
 }
+
+const TabToLink: {
+  [key: string]: string;
+} = {
+  [NavSelectedTab.Home]: "/",
+  [NavSelectedTab.SimpleBuilder]: "/simple-builder",
+};
 
 const NavBarButton = ({
   text,
@@ -34,10 +42,18 @@ const NavBarButton = ({
   return (
     <button
       className={`${classes}`}
-      onClick={() => setSelectedTab(type)}
       disabled={disabled}
+      onClick={() => {
+        setSelectedTab(type);
+      }}
     >
-      {text}
+      {disabled ? (
+        text
+      ) : (
+        <Link href={TabToLink[type]}>
+          <a>{text}</a>
+        </Link>
+      )}
     </button>
   );
 };

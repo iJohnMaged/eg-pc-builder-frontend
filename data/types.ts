@@ -57,8 +57,11 @@ export interface SimpleBuilderReducerAction {
 }
 
 export enum NavSelectedTab {
+    Home = 'Home',
+    About = 'About',
     SimpleBuilder = 'SimpleBuilder',
     AdvancedBuilder = 'AdvancedBuilder',
+    None = 'None',
 }
 
 export interface SimpleBuilderContextType {
