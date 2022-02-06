@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { NavSelectedTab } from "../../data/types";
 import NavBarButton from "./NavBarButton";
 import { useRouter } from "next/router";
@@ -17,6 +17,10 @@ export default function NavBar() {
   const [selectedTab, setSelectedTab] = useState<NavSelectedTab>(
     PathToTab[router.pathname]
   );
+
+  useEffect(() => {
+    setSelectedTab(PathToTab[router.pathname]);
+  }, [router.pathname]);
 
   return (
     <nav className="flex items-center justify-center gap-8 pb-4 text-xl text-white font-ABeeZee">
