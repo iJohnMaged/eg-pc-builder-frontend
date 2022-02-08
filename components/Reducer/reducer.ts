@@ -1,26 +1,43 @@
-import { SimpleBuilderReducerState, SimpleBuilderReducerAction, ActionType, PcPartField } from "../../data/types";
+import { v4 as uuidv4 } from 'uuid';
+import { SimpleBuilderReducerState, SimpleBuilderReducerAction, SelectedParts, ActionType, PcPartField, CategoryParts } from "../../data/types";
 
 const addNewField = (fields: PcPartField[], field: PcPartField) => {
-  const clickedFieldIdx = fields.findIndex(f => f.id === field.id && f.name === field.name);
-  // find biggest id
-  const lastFieldOfCategory = fields.reduce((acc, curr, idx) => {
-    if (curr.name === field.name && curr.id > acc.id) {
-      return {
-        id: curr.id,
-        idx: idx,
-      }
+
+  const lastIndex = fields.reduce((acc, curr, index) => {
+    if (curr.name === field.name) {
+      return index;
     }
     return acc;
-  }, {
-    id: field.id,
-    idx: clickedFieldIdx,
-  });
+  }, -1);
 
-  // Append after lastFieldOfCategory.idx
+  if (lastIndex === -1) {
+    return fields;
+  }
+
   const newFields = [...fields];
-  const newField = { ...field, id: lastFieldOfCategory.id + 1 };
-  newFields.splice(lastFieldOfCategory.idx + 1, 0, newField);
+  const newField = { ...field, id: uuidv4(), canAdd: false, canRemove: true };
+  newFields.splice(lastIndex + 1, 0, newField);
   return newFields;
+}
+
+export const initializer = (initialState: SimpleBuilderReducerState, data: CategoryParts) => {
+  if (typeof window !== 'undefined') {
+    const localStorageDataRaw = localStorage.getItem("eg_simple_builder");
+    if (localStorageDataRaw) {
+      const localStorageData = JSON.parse(localStorageDataRaw);
+      // Remove ones not in data
+      const newSelected = Object.keys(localStorageData.selected).reduce((acc, curr) => {
+        const part = localStorageData.selected[curr];
+        data[part.category].find(p => p.id === part.id) ? acc[curr] = part : null;
+        return acc;
+      }, {} as SelectedParts);
+      return {
+        ...localStorageData,
+        selected: newSelected,
+      };
+    }
+  }
+  return initialState;
 }
 
 const reducer = (state: SimpleBuilderReducerState, action: SimpleBuilderReducerAction) => {
@@ -29,29 +46,59 @@ const reducer = (state: SimpleBuilderReducerState, action: SimpleBuilderReducerA
       {
         const { field, data } = action.payload;
         const keyToAdd = `${field.name}-${field.id}`;
-        return {
+        const newState = {
           ...state,
           selected: {
             ...state.selected,
             [keyToAdd]: data,
           },
-        };
+        }
+        if (typeof window !== 'undefined') {
+          localStorage.setItem("eg_simple_builder", JSON.stringify(newState));
+        }
+        return newState;
       }
+
     case ActionType.REMOVE_COMPONENT:
       {
         const { field } = action.payload;
         const keyToRemove = `${field.name}-${field.id}`;
         const newSelected = { ...state.selected };
         delete newSelected[keyToRemove];
-        return {
+        const newState = {
           ...state,
           selected: newSelected,
         };
+        if (typeof window !== 'undefined') {
+          localStorage.setItem("eg_simple_builder", JSON.stringify(newState));
+        }
+        return newState;
       }
     case ActionType.ADD_PART_FIELD:
-      return {
-        ...state,
-        fields: addNewField(state.fields, action.payload.field)
+      {
+        const newState = {
+          ...state,
+          fields: addNewField(state.fields, action.payload.field)
+        }
+        if (typeof window !== 'undefined') {
+          localStorage.setItem("eg_simple_builder", JSON.stringify(newState));
+        }
+        return newState;
+      }
+    case ActionType.REMOVE_PART_FIELD:
+      {
+        const newFields = state.fields.filter(f => f.id !== action.payload.field.id);
+        const key = `${action.payload.field.name}-${action.payload.field.id}`;
+        const newSelected = { ...state.selected };
+        delete newSelected[key];
+        const newState = {
+          selected: newSelected,
+          fields: newFields
+        }
+        if (typeof window !== 'undefined') {
+          localStorage.setItem("eg_simple_builder", JSON.stringify(newState));
+        }
+        return newState;
       }
     default:
       return state;

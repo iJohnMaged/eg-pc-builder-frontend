@@ -12,7 +12,7 @@ export interface Store {
 export interface Part {
     id: number;
     name: string;
-    category: number;
+    category: string;
     store: number;
     price: number;
     url: string;
@@ -20,14 +20,15 @@ export interface Part {
 }
 
 export interface PcPartField {
-    id: number;
+    id: string;
     name: string;
     canAdd: boolean;
+    canRemove: boolean;
     icon: string;
     dataField: string;
 }
 
-interface CategoryParts {
+export interface CategoryParts {
     [key: string]: Part[];
 }
 
@@ -43,11 +44,11 @@ export enum ActionType {
     ADD_COMPONENT = 'ADD_COMPONENT',
     REMOVE_COMPONENT = 'REMOVE_COMPONENT',
     ADD_PART_FIELD = 'ADD_PART_FIELD',
+    REMOVE_PART_FIELD = 'REMOVE_PART_FIELD',
 }
 
 export interface SimpleBuilderReducerState {
     fields: PcPartField[];
-    options: PartsData;
     selected: SelectedParts;
 }
 
@@ -67,4 +68,5 @@ export enum NavSelectedTab {
 export interface SimpleBuilderContextType {
     state: SimpleBuilderReducerState | undefined;
     dispatch: React.Dispatch<SimpleBuilderReducerAction> | undefined;
+    options: PartsData | undefined;
 }

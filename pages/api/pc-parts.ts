@@ -14,6 +14,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const partsResult = await pool.query(partsCategory);
   const parts = partsResult.rows.reduce((acc, part) => {
     const key = cateogiresMap[part.category];
+    part.category = key;
     if (!acc[key]) {
       acc[key] = [];
     }

@@ -3,6 +3,7 @@ import Select, { createFilter } from "react-select";
 import Image from "next/image";
 import SimpleBuilderContext from "../Context/BuilderContext";
 import CustomOption from "./CustomSelectOption";
+import RemoveIcon from "../../public/icons/remove.svg";
 import { PcPartField, ActionType } from "../../data/types";
 
 const DefaultPlaceholder = ({
@@ -56,6 +57,28 @@ export default function SimpleBuilderSelect({ field }: Props) {
       return { ...provided, opacity, transition };
     },
   };
+
+  const getOptionLabel = (option: any) => {
+    return `${option.name} - ${option.price} EGP`;
+  };
+
+  const getOptionValue = (option: any) => {
+    return option.id;
+  };
+
+  const getSelectedItemFromOptions = (selectedId: string) => {
+    if (!value.state || !value.options) {
+      return null;
+    }
+    const selectedItem = value.state.selected[selectedId];
+    const option =
+      selectedItem &&
+      value.options.data[field.dataField].find(
+        (item) => selectedItem.id === item.id
+      );
+
+    return option;
+  };
   return (
     <div className="flex flex-col gap-y-2">
       <label
@@ -69,15 +92,20 @@ export default function SimpleBuilderSelect({ field }: Props) {
           </span>
         )}
       </label>
-      <div className="flex gap-x-4">
+      <div className="flex items-center gap-x-4">
         <Select
           filterOption={createFilter({ ignoreAccents: false })}
+          defaultValue={
+            value.state && value.state.selected[uniqueId]
+              ? getSelectedItemFromOptions(uniqueId)
+              : null
+          }
           inputId={uniqueId}
           instanceId={uniqueId}
-          options={value.state && value.state.options.data[field.dataField]}
+          options={value.options && value.options.data[field.dataField]}
           styles={customStyles}
-          getOptionLabel={(option) => `${option.name} - ${option.price} EGP`}
-          getOptionValue={(option) => `${option.id}`}
+          getOptionLabel={(option) => getOptionLabel(option)}
+          getOptionValue={(option) => getOptionValue(option)}
           placeholder={
             <DefaultPlaceholder
               label={"Select " + field.name}
@@ -123,6 +151,22 @@ export default function SimpleBuilderSelect({ field }: Props) {
               }
               value.dispatch({
                 type: ActionType.ADD_PART_FIELD,
+                payload: {
+                  field,
+                },
+              });
+            }}
+          />
+        )}
+        {field.canRemove && (
+          <RemoveIcon
+            className="w-[25px] h-[25px] fill-red-400 cursor-pointer"
+            onClick={() => {
+              if (!value.dispatch) {
+                return;
+              }
+              value.dispatch({
+                type: ActionType.REMOVE_PART_FIELD,
                 payload: {
                   field,
                 },

@@ -1,8 +1,8 @@
-import { useReducer } from "react";
+import { useReducer, useEffect } from "react";
 import { GetServerSideProps } from "next";
 
 import SimpleBuilder from "../components/SimpleBuilder/SimpleBuilder";
-import reducer from "../components/Reducer/reducer";
+import reducer, { initializer } from "../components/Reducer/reducer";
 import SimpleBuilderContext from "../components/Context/BuilderContext";
 import FIELDS from "../data/initialFields";
 import { PartsData, SimpleBuilderReducerState } from "../data/types";
@@ -11,17 +11,39 @@ const SimpleBuilderPage = (props: PartsData) => {
   const initialState: SimpleBuilderReducerState = {
     fields: FIELDS,
     selected: {},
-    options: {
-      data: props.data,
-    },
   };
+  const [state, dispatch] = useReducer(reducer, initialState, () =>
+    initializer(initialState, props.data)
+  );
 
-  const [state, dispatch] = useReducer(reducer, initialState);
+  useEffect(() => {
+    if (
+      process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA &&
+      typeof window !== "undefined"
+    ) {
+      const builderVersion = localStorage.getItem("builder_version");
+      // First time builder is loaded or builder version is different
+      if (
+        !builderVersion ||
+        builderVersion !== process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA
+      ) {
+        localStorage.setItem(
+          "builder_version",
+          process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA
+        );
+        localStorage.removeItem("eg_simple_builder");
+      }
+    }
+  }, []);
 
   return (
-    <main className="py-4 bg-repeat bg-center bg-checkboardPattern bg-clip-border bg-origin-padding bg-fixed bg-20px bg-opacity-50 flex-grow">
+    <main className="flex-grow py-4 bg-fixed bg-opacity-50 bg-center bg-repeat bg-checkboardPattern bg-clip-border bg-origin-padding bg-20px">
       <SimpleBuilderContext.Provider
-        value={{ state: state, dispatch: dispatch }}
+        value={{
+          state: state,
+          dispatch: dispatch,
+          options: { data: props.data },
+        }}
       >
         <SimpleBuilder />
       </SimpleBuilderContext.Provider>
