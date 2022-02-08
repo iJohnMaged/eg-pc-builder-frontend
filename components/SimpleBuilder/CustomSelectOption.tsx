@@ -14,7 +14,7 @@ export default function CustomOption({ children, ...props }: Props) {
   return (
     <components.Option {...newProps}>
       <div className="flex items-center gap-x-2">
-        <div className="w-12 h-12 flex-shrink-0">
+        <div className="flex-shrink-0 w-12 h-12 overflow-hidden rounded-lg">
           {props.data.imageUrl && (
             <Image
               src={props.data.imageUrl}

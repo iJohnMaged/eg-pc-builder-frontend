@@ -64,7 +64,7 @@ export default function SimpleBuilderSelect({ field }: Props) {
       >
         {field.name}{" "}
         {value.state && value.state.selected[uniqueId] && (
-          <span className="font-bolder italic text-purple-600">
+          <span className="italic text-purple-600 font-bolder">
             ({value.state.selected[uniqueId].price} EGP)
           </span>
         )}
