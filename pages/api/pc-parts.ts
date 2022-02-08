@@ -5,7 +5,7 @@ const pool = new Pool();
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const cateogiresQuery = `SELECT * FROM "Category"`;
-  const partsCategory = `SELECT * FROM "Part"`;
+  const partsCategory = `SELECT * FROM "Part" WHERE "recently_scraped" = true`;
   const cateogiresResult = await pool.query(cateogiresQuery);
   const cateogiresMap = cateogiresResult.rows.reduce((acc, category) => {
     acc[category.id] = category.name;
