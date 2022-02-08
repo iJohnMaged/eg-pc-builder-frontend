@@ -1,7 +1,7 @@
-import { PcPartField } from "./types";
+import { ComponentInput } from "./types";
 import { v4 as uuidv4 } from 'uuid';
 
-const FIELDS: PcPartField[] = [
+const FIELDS: ComponentInput[] = [
   {
     name: "CPU",
     id: uuidv4(),

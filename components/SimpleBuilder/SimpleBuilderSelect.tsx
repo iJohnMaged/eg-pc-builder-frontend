@@ -4,7 +4,7 @@ import Image from "next/image";
 import SimpleBuilderContext from "../Context/BuilderContext";
 import CustomOption from "./CustomSelectOption";
 import RemoveIcon from "../../public/icons/remove.svg";
-import { PcPartField, ActionType } from "../../data/types";
+import { ComponentInput, SimpleBuilderActionType } from "../../data/types";
 
 const DefaultPlaceholder = ({
   label,
@@ -20,7 +20,7 @@ const DefaultPlaceholder = ({
 );
 
 interface Props {
-  field: PcPartField;
+  field: ComponentInput;
 }
 
 export default function SimpleBuilderSelect({ field }: Props) {
@@ -118,7 +118,7 @@ export default function SimpleBuilderSelect({ field }: Props) {
             }
             if (meta.action === "select-option") {
               value.dispatch({
-                type: ActionType.ADD_COMPONENT,
+                type: SimpleBuilderActionType.ADD_COMPONENT,
                 payload: {
                   field,
                   data: option,
@@ -126,7 +126,7 @@ export default function SimpleBuilderSelect({ field }: Props) {
               });
             } else if (meta.action === "clear") {
               value.dispatch({
-                type: ActionType.REMOVE_COMPONENT,
+                type: SimpleBuilderActionType.REMOVE_COMPONENT,
                 payload: {
                   field,
                 },
@@ -150,7 +150,7 @@ export default function SimpleBuilderSelect({ field }: Props) {
                 return;
               }
               value.dispatch({
-                type: ActionType.ADD_PART_FIELD,
+                type: SimpleBuilderActionType.ADD_PART_FIELD,
                 payload: {
                   field,
                 },
@@ -166,7 +166,7 @@ export default function SimpleBuilderSelect({ field }: Props) {
                 return;
               }
               value.dispatch({
-                type: ActionType.REMOVE_PART_FIELD,
+                type: SimpleBuilderActionType.REMOVE_PART_FIELD,
                 payload: {
                   field,
                 },

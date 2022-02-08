@@ -1,7 +1,7 @@
 import { v4 as uuidv4 } from 'uuid';
-import { SimpleBuilderReducerState, SimpleBuilderReducerAction, SelectedParts, ActionType, PcPartField, CategoryParts } from "../../data/types";
+import { SimpleBuilderReducerState, SimpleBuilderReducerAction, SelectedComponents, SimpleBuilderActionType, ComponentInput, CategoryComponents } from "../../data/types";
 
-const addNewField = (fields: PcPartField[], field: PcPartField) => {
+const addNewField = (fields: ComponentInput[], field: ComponentInput) => {
 
   const lastIndex = fields.reduce((acc, curr, index) => {
     if (curr.name === field.name) {
@@ -20,7 +20,7 @@ const addNewField = (fields: PcPartField[], field: PcPartField) => {
   return newFields;
 }
 
-export const initializer = (initialState: SimpleBuilderReducerState, data: CategoryParts) => {
+export const simpleBuilderInitializer = (initialState: SimpleBuilderReducerState, data: CategoryComponents) => {
   if (typeof window !== 'undefined') {
     const localStorageDataRaw = localStorage.getItem("eg_simple_builder");
     if (localStorageDataRaw) {
@@ -30,7 +30,7 @@ export const initializer = (initialState: SimpleBuilderReducerState, data: Categ
         const part = localStorageData.selected[curr];
         data[part.category].find(p => p.id === part.id) ? acc[curr] = part : null;
         return acc;
-      }, {} as SelectedParts);
+      }, {} as SelectedComponents);
       return {
         ...localStorageData,
         selected: newSelected,
@@ -40,9 +40,9 @@ export const initializer = (initialState: SimpleBuilderReducerState, data: Categ
   return initialState;
 }
 
-const reducer = (state: SimpleBuilderReducerState, action: SimpleBuilderReducerAction) => {
+const simpleBuilderReducer = (state: SimpleBuilderReducerState, action: SimpleBuilderReducerAction) => {
   switch (action.type) {
-    case ActionType.ADD_COMPONENT:
+    case SimpleBuilderActionType.ADD_COMPONENT:
       {
         const { field, data } = action.payload;
         const keyToAdd = `${field.name}-${field.id}`;
@@ -59,7 +59,7 @@ const reducer = (state: SimpleBuilderReducerState, action: SimpleBuilderReducerA
         return newState;
       }
 
-    case ActionType.REMOVE_COMPONENT:
+    case SimpleBuilderActionType.REMOVE_COMPONENT:
       {
         const { field } = action.payload;
         const keyToRemove = `${field.name}-${field.id}`;
@@ -74,7 +74,7 @@ const reducer = (state: SimpleBuilderReducerState, action: SimpleBuilderReducerA
         }
         return newState;
       }
-    case ActionType.ADD_PART_FIELD:
+    case SimpleBuilderActionType.ADD_PART_FIELD:
       {
         const newState = {
           ...state,
@@ -85,7 +85,7 @@ const reducer = (state: SimpleBuilderReducerState, action: SimpleBuilderReducerA
         }
         return newState;
       }
-    case ActionType.REMOVE_PART_FIELD:
+    case SimpleBuilderActionType.REMOVE_PART_FIELD:
       {
         const newFields = state.fields.filter(f => f.id !== action.payload.field.id);
         const key = `${action.payload.field.name}-${action.payload.field.id}`;
@@ -105,4 +105,4 @@ const reducer = (state: SimpleBuilderReducerState, action: SimpleBuilderReducerA
   }
 };
 
-export default reducer;
+export default simpleBuilderReducer;

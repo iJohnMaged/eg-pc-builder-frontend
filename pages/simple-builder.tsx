@@ -2,18 +2,20 @@ import { useReducer, useEffect } from "react";
 import { GetServerSideProps } from "next";
 
 import SimpleBuilder from "../components/SimpleBuilder/SimpleBuilder";
-import reducer, { initializer } from "../components/Reducer/reducer";
+import simpleBuilderReducer, {
+  simpleBuilderInitializer,
+} from "../components/Reducer/simpleBuilderReducer";
 import SimpleBuilderContext from "../components/Context/BuilderContext";
 import FIELDS from "../data/initialFields";
-import { PartsData, SimpleBuilderReducerState } from "../data/types";
+import { CategoriesComponents, SimpleBuilderReducerState } from "../data/types";
 
-const SimpleBuilderPage = (props: PartsData) => {
+const SimpleBuilderPage = (props: CategoriesComponents) => {
   const initialState: SimpleBuilderReducerState = {
     fields: FIELDS,
     selected: {},
   };
-  const [state, dispatch] = useReducer(reducer, initialState, () =>
-    initializer(initialState, props.data)
+  const [state, dispatch] = useReducer(simpleBuilderReducer, initialState, () =>
+    simpleBuilderInitializer(initialState, props.data)
   );
 
   useEffect(() => {

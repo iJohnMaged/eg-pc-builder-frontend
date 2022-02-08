@@ -9,7 +9,7 @@ export interface Store {
     url: string;
 }
 
-export interface Part {
+export interface Component {
     id: number;
     name: string;
     category: string;
@@ -19,7 +19,7 @@ export interface Part {
     imageUrl: string;
 }
 
-export interface PcPartField {
+export interface ComponentInput {
     id: string;
     name: string;
     canAdd: boolean;
@@ -28,19 +28,19 @@ export interface PcPartField {
     dataField: string;
 }
 
-export interface CategoryParts {
-    [key: string]: Part[];
+export interface CategoryComponents {
+    [key: string]: Component[];
 }
 
-export interface PartsData {
-    data: CategoryParts;
+export interface CategoriesComponents {
+    data: CategoryComponents;
 }
 
-export interface SelectedParts {
-    [key: string]: Part;
+export interface SelectedComponents {
+    [key: string]: Component;
 }
 
-export enum ActionType {
+export enum SimpleBuilderActionType {
     ADD_COMPONENT = 'ADD_COMPONENT',
     REMOVE_COMPONENT = 'REMOVE_COMPONENT',
     ADD_PART_FIELD = 'ADD_PART_FIELD',
@@ -48,12 +48,12 @@ export enum ActionType {
 }
 
 export interface SimpleBuilderReducerState {
-    fields: PcPartField[];
-    selected: SelectedParts;
+    fields: ComponentInput[];
+    selected: SelectedComponents;
 }
 
 export interface SimpleBuilderReducerAction {
-    type: ActionType;
+    type: SimpleBuilderActionType;
     payload: any;
 }
 
@@ -66,7 +66,7 @@ export enum NavSelectedTab {
 }
 
 export interface SimpleBuilderContextType {
-    state: SimpleBuilderReducerState | undefined;
-    dispatch: React.Dispatch<SimpleBuilderReducerAction> | undefined;
-    options: PartsData | undefined;
+    state: SimpleBuilderReducerState;
+    dispatch: React.Dispatch<SimpleBuilderReducerAction>;
+    options: CategoriesComponents;
 }

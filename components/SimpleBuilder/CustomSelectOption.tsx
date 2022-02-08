@@ -1,12 +1,12 @@
 import React from "react";
 import { components, OptionProps } from "react-select";
 import Image from "next/image";
-import { Part } from "../../data/types";
+import { Component } from "../../data/types";
 
 interface Props {
   children: React.ReactNode;
   innerProps: any;
-  data: Part;
+  data: Component;
 }
 export default function CustomOption({ children, ...props }: Props) {
   const { onMouseMove, onMouseOver, ...rest } = props.innerProps;

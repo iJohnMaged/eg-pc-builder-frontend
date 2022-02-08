@@ -1,12 +1,8 @@
 import { createContext } from "react";
 import { SimpleBuilderContextType } from "../../data/types";
 
-const defaultContext = {
-  state: undefined,
-  dispatch: undefined,
-  options: undefined,
-};
-const SimpleBuilderContext =
-  createContext<SimpleBuilderContextType>(defaultContext);
+const SimpleBuilderContext = createContext<SimpleBuilderContextType>(
+  {} as SimpleBuilderContextType
+);
 
 export default SimpleBuilderContext;
