@@ -10,7 +10,7 @@ export interface Store {
 }
 
 export interface Component {
-    id: number;
+    id: string;
     name: string;
     category: string;
     store: number;
@@ -68,5 +68,4 @@ export enum NavSelectedTab {
 export interface SimpleBuilderContextType {
     state: SimpleBuilderReducerState;
     dispatch: React.Dispatch<SimpleBuilderReducerAction>;
-    options: CategoriesComponents;
 }

@@ -1,9 +1,21 @@
-import { useContext } from "react";
+import dynamic from "next/dynamic";
+import { useContext, useState, useEffect } from "react";
 import SimpleBuilderSelect from "./SimpleBuilderSelect";
 import SimpleBuilderContext from "../Context/BuilderContext";
 
-export default function SimpleBuilder() {
-  const value = useContext(SimpleBuilderContext);
+function SimpleBuilder() {
+  const { state } = useContext(SimpleBuilderContext);
+  const [totalPrice, setTotalPrice] = useState(0);
+
+  useEffect(() => {
+    const total = Object.keys(state.selected).reduce((acc, key) => {
+      if (state.selected[key] && state.selected[key].price) {
+        return acc + state.selected[key].price;
+      }
+      return acc;
+    }, 0);
+    setTotalPrice(total);
+  }, [state.selected]);
 
   return (
     <div className="flex flex-col items-start gap-4 mx-auto text-xl bg-white border-4 rounded-lg w-max text-neutral-700 shadow-hardShadow border-neutral-900">
@@ -16,30 +28,20 @@ export default function SimpleBuilder() {
         </div>
       </div>
       <div className="flex flex-col gap-4 px-8 pb-4">
-        {value.state &&
-          value.state.fields.map((field) => (
-            <SimpleBuilderSelect
-              field={field}
-              key={`${field.name}-${field.id}`}
-            />
-          ))}
-        {value.state && Object.keys(value.state.selected).length > 0 && (
-          <div className="mt-4 text-3xl font-bold text-center text-purple-600">
-            <span>Total: </span>
-            {Object.keys(value.state.selected).reduce((acc, key) => {
-              if (!value.state) return acc;
-              if (
-                value.state.selected[key] &&
-                value.state.selected[key].price
-              ) {
-                return acc + value.state.selected[key].price;
-              }
-              return acc;
-            }, 0)}{" "}
-            EGP
-          </div>
-        )}
+        {state.fields.map((field) => (
+          <SimpleBuilderSelect
+            field={field}
+            key={`${field.name}-${field.id}`}
+          />
+        ))}
+        <div className="mt-4 text-3xl font-bold text-center text-purple-600">
+          Total Price: {totalPrice} EGP
+        </div>
       </div>
     </div>
   );
 }
+
+export default dynamic(() => Promise.resolve(SimpleBuilder), {
+  ssr: false,
+});

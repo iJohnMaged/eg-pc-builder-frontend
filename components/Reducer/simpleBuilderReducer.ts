@@ -1,5 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 import { SimpleBuilderReducerState, SimpleBuilderReducerAction, SelectedComponents, SimpleBuilderActionType, ComponentInput, CategoryComponents } from "../../data/types";
+import FIELDS from "../../data/initialFields";
 
 const addNewField = (fields: ComponentInput[], field: ComponentInput) => {
 
@@ -20,21 +21,17 @@ const addNewField = (fields: ComponentInput[], field: ComponentInput) => {
   return newFields;
 }
 
-export const simpleBuilderInitializer = (initialState: SimpleBuilderReducerState, data: CategoryComponents) => {
+export const simpleBuilderInitializer = (initialState: SimpleBuilderReducerState) => {
   if (typeof window !== 'undefined') {
     const localStorageDataRaw = localStorage.getItem("eg_simple_builder");
     if (localStorageDataRaw) {
-      const localStorageData = JSON.parse(localStorageDataRaw);
-      // Remove ones not in data
-      const newSelected = Object.keys(localStorageData.selected).reduce((acc, curr) => {
-        const part = localStorageData.selected[curr];
-        data[part.category].find(p => p.id === part.id) ? acc[curr] = part : null;
-        return acc;
-      }, {} as SelectedComponents);
-      return {
-        ...localStorageData,
-        selected: newSelected,
-      };
+      try {
+        const localStorageData = JSON.parse(localStorageDataRaw);
+        // Remove ones not in data
+        return localStorageData;
+      } catch (e) {
+        return initialState
+      }
     }
   }
   return initialState;

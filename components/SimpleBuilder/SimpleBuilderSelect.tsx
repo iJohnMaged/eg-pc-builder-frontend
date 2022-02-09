@@ -1,62 +1,30 @@
-import { useContext } from "react";
-import Select, { createFilter } from "react-select";
-import Image from "next/image";
+import { useContext, useState, useEffect } from "react";
+import Select, { ActionMeta, createFilter, OnChangeValue } from "react-select";
 import SimpleBuilderContext from "../Context/BuilderContext";
 import CustomOption from "./CustomSelectOption";
-import RemoveIcon from "../../public/icons/remove.svg";
-import { ComponentInput, SimpleBuilderActionType } from "../../data/types";
-
-const DefaultPlaceholder = ({
-  label,
-  icon,
-}: {
-  label: string;
-  icon: string;
-}) => (
-  <div className="flex items-center gap-x-2">
-    <Image src={icon} width={25} height={25} alt={label} className="pr-2" />
-    {label}
-  </div>
-);
+import {
+  Component,
+  ComponentInput,
+  SimpleBuilderActionType,
+} from "../../data/types";
+import PlaceholderWithIcon from "./InputPlaceholder";
+import customStyles from "./CustomStyles";
+import AddNewComponentIcon from "./AddNewComponentIcon";
+import RemoveComponentField from "./RemoveComponentField";
+import useOptionsData from "./useOptionsData";
 
 interface Props {
   field: ComponentInput;
 }
 
 export default function SimpleBuilderSelect({ field }: Props) {
-  const value = useContext(SimpleBuilderContext);
   const uniqueId = `${field.name}-${field.id}`;
+  const { state, dispatch } = useContext(SimpleBuilderContext);
+  const [selected, setSelected] = useState<Component | null | undefined>(
+    state.selected ? state.selected[uniqueId] : undefined
+  );
 
-  const customStyles = {
-    menu: (provided: any) => ({
-      ...provided,
-      background: "#1A1A1A",
-    }),
-    control: (provided: any, state: any) => ({
-      ...provided,
-      border: state.isFocused ? "2px solid black" : "2px solid #e1e1e1",
-      outline: "none",
-      boxShadow: "none",
-      "&:hover": {
-        border: state.isFocused ? "2px solid black" : "2px solid #e1e1e1",
-      },
-    }),
-    option: (provided: any, state: any) => ({
-      ...provided,
-      background: "#1A1A1A",
-      color: "white",
-      padding: "10px 10px",
-      "&:hover": {
-        background: "#404040",
-        color: "white",
-      },
-    }),
-    singleValue: (provided: any, state: any) => {
-      const opacity = state.isDisabled ? 0.5 : 1;
-      const transition = "opacity 300ms";
-      return { ...provided, opacity, transition };
-    },
-  };
+  const { options, isLoading, isError } = useOptionsData(field.dataField);
 
   const getOptionLabel = (option: any) => {
     return `${option.name} - ${option.price} EGP`;
@@ -66,19 +34,52 @@ export default function SimpleBuilderSelect({ field }: Props) {
     return option.id;
   };
 
-  const getSelectedItemFromOptions = (selectedId: string) => {
-    if (!value.state || !value.options) {
+  const getSelectedItemFromOptions = () => {
+    if (!selected) {
       return null;
     }
-    const selectedItem = value.state.selected[selectedId];
-    const option =
-      selectedItem &&
-      value.options.data[field.dataField].find(
-        (item) => selectedItem.id === item.id
-      );
-
-    return option;
+    const selectedId = selected.id;
+    const part = options.parts.find(
+      (part: Component) => part.id === selectedId
+    );
+    if (!part) {
+      setSelected(null);
+      dispatch({
+        type: SimpleBuilderActionType.REMOVE_COMPONENT,
+        payload: {
+          field,
+        },
+      });
+    }
+    return part;
   };
+
+  const onChangeSelectedItem = (
+    newValue: OnChangeValue<any, any>,
+    actionMeta: ActionMeta<any>
+  ) => {
+    console.log("triggering onChangeSelectedItem");
+
+    if (actionMeta.action === "select-option") {
+      setSelected(newValue);
+      dispatch({
+        type: SimpleBuilderActionType.ADD_COMPONENT,
+        payload: {
+          field,
+          data: newValue,
+        },
+      });
+    } else if (actionMeta.action === "clear") {
+      setSelected(null);
+      dispatch({
+        type: SimpleBuilderActionType.REMOVE_COMPONENT,
+        payload: {
+          field,
+        },
+      });
+    }
+  };
+
   return (
     <div className="flex flex-col gap-y-2">
       <label
@@ -86,106 +87,51 @@ export default function SimpleBuilderSelect({ field }: Props) {
         htmlFor={uniqueId}
       >
         {field.name}{" "}
-        {value.state && value.state.selected[uniqueId] && (
+        {!isLoading && selected && (
           <span className="italic text-purple-600 font-bolder">
-            ({value.state.selected[uniqueId].price} EGP)
+            ({selected.price} EGP)
           </span>
         )}
       </label>
-      <div className="flex items-center gap-x-4">
-        <Select
-          filterOption={createFilter({ ignoreAccents: false })}
-          defaultValue={
-            value.state && value.state.selected[uniqueId]
-              ? getSelectedItemFromOptions(uniqueId)
-              : null
-          }
-          inputId={uniqueId}
-          instanceId={uniqueId}
-          options={value.options && value.options.data[field.dataField]}
-          styles={customStyles}
-          getOptionLabel={(option) => getOptionLabel(option)}
-          getOptionValue={(option) => getOptionValue(option)}
-          placeholder={
-            <DefaultPlaceholder
-              label={"Select " + field.name}
-              icon={field.icon}
+
+      {isLoading ? (
+        <div className="w-[550px] h-6 bg-neutral-100 animate-pulse rounded-full"></div>
+      ) : (
+        <>
+          <div className="flex items-center gap-x-4">
+            <Select
+              filterOption={createFilter({ ignoreAccents: false })}
+              defaultValue={selected ? getSelectedItemFromOptions() : null}
+              inputId={uniqueId}
+              options={options ? options.parts : []}
+              instanceId={uniqueId}
+              styles={customStyles}
+              getOptionLabel={(option) => getOptionLabel(option)}
+              getOptionValue={(option) => getOptionValue(option)}
+              placeholder={<PlaceholderWithIcon field={field} />}
+              onChange={onChangeSelectedItem}
+              isLoading={isLoading}
+              components={{ Option: CustomOption }}
+              menuPlacement="auto"
+              className="w-[550px] text-sm font-bold"
+              isClearable
             />
-          }
-          onChange={(option, meta) => {
-            if (!value.dispatch) {
-              return;
-            }
-            if (meta.action === "select-option") {
-              value.dispatch({
-                type: SimpleBuilderActionType.ADD_COMPONENT,
-                payload: {
-                  field,
-                  data: option,
-                },
-              });
-            } else if (meta.action === "clear") {
-              value.dispatch({
-                type: SimpleBuilderActionType.REMOVE_COMPONENT,
-                payload: {
-                  field,
-                },
-              });
-            }
-          }}
-          components={{ Option: CustomOption }}
-          menuPlacement="auto"
-          className="w-[550px] text-sm font-bold"
-          isClearable
-        />
-        {field.canAdd && (
-          <Image
-            src={"/icons/plus.svg"}
-            width={25}
-            height={25}
-            alt={"cpu"}
-            className="cursor-pointer"
-            onClick={() => {
-              if (!value.dispatch) {
-                return;
-              }
-              value.dispatch({
-                type: SimpleBuilderActionType.ADD_PART_FIELD,
-                payload: {
-                  field,
-                },
-              });
-            }}
-          />
-        )}
-        {field.canRemove && (
-          <RemoveIcon
-            className="w-[25px] h-[25px] fill-red-400 cursor-pointer"
-            onClick={() => {
-              if (!value.dispatch) {
-                return;
-              }
-              value.dispatch({
-                type: SimpleBuilderActionType.REMOVE_PART_FIELD,
-                payload: {
-                  field,
-                },
-              });
-            }}
-          />
-        )}
-      </div>
-      {value.state && value.state.selected[uniqueId] && (
-        <div className="text-xs italic max-w-[450px] text-ellipsis overflow-hidden whitespace-nowrap">
-          <a
-            href={value.state.selected[uniqueId].url}
-            target="_blank"
-            rel="noreferrer"
-            className="text-purple-500"
-          >
-            {value.state.selected[uniqueId].url}
-          </a>
-        </div>
+            {field.canAdd && <AddNewComponentIcon field={field} />}
+            {field.canRemove && <RemoveComponentField field={field} />}
+          </div>
+          {options && selected && (
+            <div className="text-xs italic max-w-[450px] text-ellipsis overflow-hidden whitespace-nowrap">
+              <a
+                href={selected.url}
+                target="_blank"
+                rel="noreferrer"
+                className="text-purple-500"
+              >
+                {selected.url}
+              </a>
+            </div>
+          )}
+        </>
       )}
     </div>
   );
