@@ -1,8 +1,8 @@
 import "../styles/globals.css";
 import { AppProps } from "next/app";
 import Head from "next/head";
-import NavBar from "../components/Nav/NavBar";
 import NextNprogress from "nextjs-progressbar";
+import Header from "../components/Header/Header";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
@@ -17,11 +17,8 @@ function MyApp({ Component, pageProps }: AppProps) {
       <Head>
         <title>EG PC Builder</title>
       </Head>
-      <div className="scroll-smooth font-Quicksand flex min-h-screen flex-col">
-        <header className="text-white bg-neutral-800">
-          <div className="px-8 py-4 text-3xl font-bold">EG PC Builder</div>
-          <NavBar />
-        </header>
+      <div className="flex flex-col min-h-screen scroll-smooth font-Quicksand">
+        <Header />
         <Component {...pageProps} />
       </div>
     </>

@@ -1,40 +1,43 @@
 import Image from "next/image";
-import Link from "next/link";
+import GlowingButton from "../components/GlowingButton/GlowingButton";
+import { useRouter } from "next/router";
+
+const GetStartedButton = () => {
+  const router = useRouter();
+  return (
+    <GlowingButton
+      onClick={() => {
+        router.push("/simple-builder");
+      }}
+    >
+      <span className="text-sm font-bold text-pink-600 md:text-xl">
+        Get Started Now
+      </span>
+    </GlowingButton>
+  );
+};
 
 export default function Home() {
   return (
-    <main className="flex-grow grid content-center relative">
-      <div className="absolute inset-x-0 mx-auto w-[350px] top-1/2 -translate-y-1/2">
+    <main className="relative flex flex-col items-center justify-end flex-grow p-5 md:justify-center">
+      <div className="absolute inset-0 z-0 flex-shrink-0 p-4 bg-black pointer-events-none">
         <Image
-          width={333.95}
-          height={307}
-          src={"/images/Layer_3.svg"}
-          alt="Background Card"
+          src="/gaming-room.png"
+          alt="Your Ultimate Gaming Room"
+          className="shadow-2xl shadow-white"
+          layout="fill"
+          objectFit="cover"
+          width={3305}
+          height={2848}
+          quality={100}
         />
       </div>
-      <div className="z-10 font-bold text-xl max-w-[400px] mx-auto text-center flex flex-col gap-2">
-        <div>
-          Hey{" "}
-          <Image
-            width={25}
-            height={25}
-            objectFit="cover"
-            src={"/icons/waving.png"}
-            alt=""
-          />
+      <div className="z-50 flex flex-col items-center gap-8 text-center text-white md:w-3/4 md:text-2xl">
+        <div className="text-2xl sm:leading-normal p-2 font-extrabold font-Dosis text-transparent bg-repeat-x bg-600% animate-animateBackground sm:text-5xl bg-clip-text bg-gradient-to-r from-emerald-300 via-yellow-500 to-red-600">
+          Your number one destination for building your own <span>dream</span>{" "}
+          PC from scratch with the prices available in the Egyptian market.
         </div>
-        <div>Building your PC in Egypt?</div>
-        <div>
-          Whether for gaming or productivity, EG PC Builder will help you pick
-          the <span className="text-purple-700">best price</span> for your
-          parts!
-        </div>
-        <div>
-          Get started{" "}
-          <Link href="/simple-builder">
-            <a className="text-sky-600">By using our Simple Builder! 👀</a>
-          </Link>
-        </div>
+        <GetStartedButton />
       </div>
     </main>
   );

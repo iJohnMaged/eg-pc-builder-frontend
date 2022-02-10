@@ -23,7 +23,7 @@ export default function NavBar() {
   }, [router.pathname]);
 
   return (
-    <nav className="flex items-center justify-center gap-8 pb-4 text-xl text-white font-ABeeZee">
+    <nav className="flex items-center justify-center gap-8 pb-4 text-xl font-ABeeZee">
       <NavBarButton
         text="Home"
         setSelectedTab={setSelectedTab}

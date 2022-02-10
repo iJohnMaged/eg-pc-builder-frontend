@@ -7,6 +7,7 @@ module.exports = {
     extend: {
       fontFamily: {
         Quicksand: ["Quicksand", "sans-serif"],
+        Dosis: ["Dosis", "sans-serif"],
       },
       backgroundImage: {
         checkboardPattern:
@@ -14,9 +15,24 @@ module.exports = {
       },
       backgroundSize: {
         "20px": "20px 20px",
+        "600%": "600% 600%",
       },
       boxShadow: {
         hardShadow: "10px 8px black",
+      },
+      keyframes: {
+        animateBackgroundKf: {
+          from: {
+            backgroundPosition: "0% 0%",
+          },
+          to: {
+            backgroundPosition: "100% 0%",
+          },
+        },
+      },
+      animation: {
+        animateBackground:
+          "animateBackgroundKf 2s ease-in-out infinite alternate",
       },
     },
   },
