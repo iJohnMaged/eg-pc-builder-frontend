@@ -22,7 +22,7 @@ function SimpleBuilder() {
 
   return (
     <>
-      <div className="flex flex-col items-start gap-4 mx-auto mt-20 text-xl bg-white border-4 border-black rounded-lg w-max">
+      <div className="flex flex-col items-start w-4/5 max-w-3xl mx-auto mt-20 text-xl bg-white border-4 border-black rounded-lg gap-y-4">
         <div className="flex items-center justify-between w-full gap-4 px-8 py-4 font-extrabold text-black border-b-4 border-black">
           <div>Builder...</div>
           <div className="flex flex-col justify-between w-full gap-1">
@@ -37,7 +37,7 @@ function SimpleBuilder() {
             Reset
           </button>
         </div>
-        <div className="flex flex-col gap-4 px-8 pb-4">
+        <div className="flex flex-col w-full gap-4 px-2 pb-4 md:px-8">
           {state.fields.map((field) => (
             <SimpleBuilderSelect
               field={field}

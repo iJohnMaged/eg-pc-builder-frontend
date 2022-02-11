@@ -1,4 +1,4 @@
-import { useContext, useState, useEffect } from "react";
+import { useContext, useState } from "react";
 import Select, { ActionMeta, createFilter, OnChangeValue } from "react-select";
 import SimpleBuilderContext from "../Context/BuilderContext";
 import CustomOption from "./CustomSelectOption";
@@ -24,7 +24,7 @@ export default function SimpleBuilderSelect({ field }: Props) {
     state.selected ? state.selected[uniqueId] : undefined
   );
 
-  const { options, isLoading, isError } = useOptionsData(field.dataField);
+  const { options, isLoading } = useOptionsData(field.dataField);
 
   const getOptionLabel = (option: any) => {
     return `${option.name} - ${option.price} EGP`;
@@ -58,8 +58,6 @@ export default function SimpleBuilderSelect({ field }: Props) {
     newValue: OnChangeValue<any, any>,
     actionMeta: ActionMeta<any>
   ) => {
-    console.log("triggering onChangeSelectedItem");
-
     if (actionMeta.action === "select-option") {
       setSelected(newValue);
       dispatch({
@@ -81,7 +79,7 @@ export default function SimpleBuilderSelect({ field }: Props) {
   };
 
   return (
-    <div className="flex flex-col gap-y-2">
+    <div className="flex flex-col w-full gap-y-2">
       <label
         className="text-base font-semibold text-neutral-800"
         htmlFor={uniqueId}
@@ -95,10 +93,10 @@ export default function SimpleBuilderSelect({ field }: Props) {
       </label>
 
       {isLoading ? (
-        <div className="w-[550px] h-6 bg-neutral-100 animate-pulse rounded-full"></div>
+        <div className="w-full h-6 rounded-full bg-neutral-100 animate-pulse"></div>
       ) : (
         <>
-          <div className="flex items-center gap-x-4">
+          <div className="flex flex-col items-center gap-x-4 md:flex-row">
             <Select
               filterOption={createFilter({ ignoreAccents: false })}
               defaultValue={selected ? getSelectedItemFromOptions() : null}
@@ -113,7 +111,7 @@ export default function SimpleBuilderSelect({ field }: Props) {
               isLoading={isLoading}
               components={{ Option: CustomOption }}
               menuPlacement="auto"
-              className="w-[550px] text-sm font-bold"
+              className="w-full text-sm font-bold"
               isClearable
             />
             {field.canAdd && <AddNewComponentIcon field={field} />}
