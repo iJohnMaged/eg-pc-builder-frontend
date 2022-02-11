@@ -23,7 +23,11 @@ export default function aboutPage() {
             project on my github page.
           </div>
           <div className="flex gap-2">
-            <a href="https://github.com/iJohnMaged">
+            <a
+              href="https://github.com/iJohnMaged"
+              target="_blank"
+              rel="noreferrer"
+            >
               <Image
                 src="/icons/github.png"
                 width={20}
@@ -31,7 +35,11 @@ export default function aboutPage() {
                 alt="github"
               />
             </a>
-            <a href="https://www.linkedin.com/in/john-maged-b7300a208/">
+            <a
+              href="https://www.linkedin.com/in/john-maged-b7300a208/"
+              target="_blank"
+              rel="noreferrer"
+            >
               <Image
                 src="/icons/linkedin.png"
                 width={20}
