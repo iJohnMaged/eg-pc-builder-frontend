@@ -1,9 +1,8 @@
 import { v4 as uuidv4 } from 'uuid';
-import { SimpleBuilderReducerState, SimpleBuilderReducerAction, SelectedComponents, SimpleBuilderActionType, ComponentInput, CategoryComponents } from "../../data/types";
-import FIELDS from "../../data/initialFields";
+import getInitialFields from '../../data/initialFields';
+import { SimpleBuilderReducerState, SimpleBuilderReducerAction, SimpleBuilderActionType, ComponentInput } from "../../data/types";
 
 const addNewField = (fields: ComponentInput[], field: ComponentInput) => {
-
   const lastIndex = fields.reduce((acc, curr, index) => {
     if (curr.name === field.name) {
       return index;
@@ -37,6 +36,13 @@ export const simpleBuilderInitializer = (initialState: SimpleBuilderReducerState
   return initialState;
 }
 
+const saveToLocalStorage = (state: SimpleBuilderReducerState) => {
+  if (typeof window !== 'undefined') {
+    localStorage.setItem("eg_simple_builder", JSON.stringify(state));
+  }
+  return state;
+};
+
 const simpleBuilderReducer = (state: SimpleBuilderReducerState, action: SimpleBuilderReducerAction) => {
   switch (action.type) {
     case SimpleBuilderActionType.ADD_COMPONENT:
@@ -50,10 +56,7 @@ const simpleBuilderReducer = (state: SimpleBuilderReducerState, action: SimpleBu
             [keyToAdd]: data,
           },
         }
-        if (typeof window !== 'undefined') {
-          localStorage.setItem("eg_simple_builder", JSON.stringify(newState));
-        }
-        return newState;
+        return saveToLocalStorage(newState);
       }
 
     case SimpleBuilderActionType.REMOVE_COMPONENT:
@@ -66,10 +69,7 @@ const simpleBuilderReducer = (state: SimpleBuilderReducerState, action: SimpleBu
           ...state,
           selected: newSelected,
         };
-        if (typeof window !== 'undefined') {
-          localStorage.setItem("eg_simple_builder", JSON.stringify(newState));
-        }
-        return newState;
+        return saveToLocalStorage(newState);
       }
     case SimpleBuilderActionType.ADD_PART_FIELD:
       {
@@ -77,10 +77,7 @@ const simpleBuilderReducer = (state: SimpleBuilderReducerState, action: SimpleBu
           ...state,
           fields: addNewField(state.fields, action.payload.field)
         }
-        if (typeof window !== 'undefined') {
-          localStorage.setItem("eg_simple_builder", JSON.stringify(newState));
-        }
-        return newState;
+        return saveToLocalStorage(newState);
       }
     case SimpleBuilderActionType.REMOVE_PART_FIELD:
       {
@@ -92,10 +89,15 @@ const simpleBuilderReducer = (state: SimpleBuilderReducerState, action: SimpleBu
           selected: newSelected,
           fields: newFields
         }
-        if (typeof window !== 'undefined') {
-          localStorage.setItem("eg_simple_builder", JSON.stringify(newState));
+        return saveToLocalStorage(newState);
+      }
+    case SimpleBuilderActionType.RESET_SELECTED:
+      {
+        const newState = {
+          fields: getInitialFields(),
+          selected: {}
         }
-        return newState;
+        return saveToLocalStorage(newState);
       }
     default:
       return state;

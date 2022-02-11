@@ -5,11 +5,11 @@ import simpleBuilderReducer, {
 } from "../components/Reducer/simpleBuilderReducer";
 import SimpleBuilderContext from "../components/Context/BuilderContext";
 import { SimpleBuilderReducerState } from "../data/types";
-import FIELDS from "../data/initialFields";
+import getInitialFields from "../data/initialFields";
 
 const SimpleBuilderPage = () => {
   const initialState: SimpleBuilderReducerState = {
-    fields: FIELDS,
+    fields: getInitialFields(),
     selected: {},
   };
   const [state, dispatch] = useReducer(simpleBuilderReducer, initialState, () =>
@@ -37,7 +37,7 @@ const SimpleBuilderPage = () => {
   }, []);
 
   return (
-    <main className="flex-grow py-4 bg-fixed bg-white">
+    <main className="flex-grow py-4 bg-fixed bg-zinc-900">
       <SimpleBuilderContext.Provider
         value={{
           state: state,

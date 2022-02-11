@@ -45,6 +45,7 @@ export enum SimpleBuilderActionType {
     REMOVE_COMPONENT = 'REMOVE_COMPONENT',
     ADD_PART_FIELD = 'ADD_PART_FIELD',
     REMOVE_PART_FIELD = 'REMOVE_PART_FIELD',
+    RESET_SELECTED = 'RESET_SELECTED',
 }
 
 export interface SimpleBuilderReducerState {
@@ -54,7 +55,7 @@ export interface SimpleBuilderReducerState {
 
 export interface SimpleBuilderReducerAction {
     type: SimpleBuilderActionType;
-    payload: any;
+    payload?: any;
 }
 
 export enum NavSelectedTab {
