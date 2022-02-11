@@ -36,7 +36,7 @@ const NavBarButton = ({
     // Disabled
     "disabled:cursor-not-allowed disabled:opacity-40": true,
     // animations
-    "transition-all duration-500 ease-in after:transition-all": true,
+    "transition-all duration-200 ease-in-out after:transition-all": true,
     // Active tab
     "font-bold after:absolute after:w-[5%] after:mx-auto after:inset-x-0 after:h-0.5 after:bg-white after:bottom-0":
       selectedTab === type,
