@@ -38,6 +38,16 @@ export default function SimpleBuilderSelect({ field }: Props) {
     if (!selected) {
       return null;
     }
+    if (!options) {
+      setSelected(null);
+      dispatch({
+        type: SimpleBuilderActionType.REMOVE_COMPONENT,
+        payload: {
+          field,
+        },
+      });
+      return null;
+    }
     const selectedId = selected.id;
     const part = options.parts.find(
       (part: Component) => part.id === selectedId

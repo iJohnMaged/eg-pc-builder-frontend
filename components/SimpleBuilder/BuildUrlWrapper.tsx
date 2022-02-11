@@ -1,4 +1,4 @@
-import React from "react";
+import ButtonWithTooltip from "../Buttons/ButtonWithTooltip";
 
 type Props = {
   buildUrl: string | null;
@@ -41,14 +41,20 @@ const BuildUrlWrapper = (props: Props) => {
   return (
     <div className="flex flex-col items-center gap-2 px-4 py-2 mx-auto text-sm font-bold text-center border rounded-lg w-max border-emerald-400 text-neutral-900">
       <a href={props.buildUrl}>{props.buildUrl}</a>
-      <button
-        className="p-1 text-white rounded-full bg-neutral-200 hover:bg-neutral-300"
-        onClick={() => {
+      <ButtonWithTooltip
+        cb={() => {
           navigator.clipboard.writeText(props.buildUrl as string);
         }}
+        classes="p-1 text-white rounded-full bg-neutral-200 hover:bg-neutral-300"
+        toolTipText="Copied!"
+        place="bottom"
+        type="success"
+        effect="solid"
+        tooltipClasses="text-neutral-900 font-bold"
+        delayHide={300}
       >
         <CopyIcon />
-      </button>
+      </ButtonWithTooltip>
     </div>
   );
 };
