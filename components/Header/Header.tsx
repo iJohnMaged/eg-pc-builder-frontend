@@ -36,9 +36,10 @@ const Header = () => {
   const headerWrapperClasses = classNames(
     {
       "xl:text-3xl md:text-base": !shrink,
-      "text-xl bg-opacity-10": shrink,
+      "bg-opacity-10 text-sm xl:text-2xl": shrink,
       "py-2": !shrink,
       "py-1": shrink,
+      "px-2": true,
     },
     [
       // common

@@ -35,12 +35,12 @@ export default function BuildView({ build }: BuildViewProps) {
 
   return (
     <main className="flex justify-center flex-grow py-4 bg-black bg-cover bg-pattern font-Quicksand">
-      <div className="z-50 w-3/5 mt-20">
+      <div className="z-50 w-4/5 mt-20">
         <div className="p-4 my-4 text-3xl font-bold text-center text-white">
           Total Build Price: <span className="text-red-500">{totalPrice}</span>{" "}
           EGP
         </div>
-        <div className="grid w-full grid-cols-4 gap-y-8 gap-x-4 auto-rows-fr">
+        <div className="grid w-full grid-cols-1 2xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 gap-y-8 gap-x-4 auto-rows-fr">
           {build.components.map((component) => (
             <ComponentCard key={component.id} component={component} />
           ))}
