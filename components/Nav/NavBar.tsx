@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { NavSelectedTab } from "../../data/types";
 import NavBarButton from "./NavBarButton";
 import { useRouter } from "next/router";
+import classNames from "classnames";
 
 const PathToTab: {
   [key: string]: NavSelectedTab;
@@ -11,7 +12,12 @@ const PathToTab: {
   "/about": NavSelectedTab.About,
 };
 
-export default function NavBar() {
+interface NavBarProps {
+  shrink: boolean;
+  hamburgerMenuOpen: boolean;
+}
+
+export default function NavBar(props: NavBarProps) {
   const router = useRouter();
 
   const [selectedTab, setSelectedTab] = useState<NavSelectedTab>(
@@ -22,8 +28,20 @@ export default function NavBar() {
     setSelectedTab(PathToTab[router.pathname]);
   }, [router.pathname]);
 
+  const classes = classNames(
+    {
+      "text-sm lg:text-lg": !props.shrink,
+      "text-sm lg:text-base": props.shrink,
+      hidden: !props.hamburgerMenuOpen,
+      flex: props.hamburgerMenuOpen,
+    },
+    "transition-all md:flex",
+    "flex-col items-center",
+    "md:flex-row"
+  );
+
   return (
-    <nav className="flex items-center justify-center gap-8 pb-4 text-xl font-ABeeZee">
+    <nav className={classes}>
       <NavBarButton
         text="Home"
         setSelectedTab={setSelectedTab}
