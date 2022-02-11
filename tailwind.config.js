@@ -12,6 +12,7 @@ module.exports = {
       backgroundImage: {
         checkboardPattern:
           "repeating-conic-gradient(rgb(128, 128, 128) 0%, rgb(128, 128, 128) 25%, transparent 0%, transparent 50%)",
+        pattern: "url(/pattern.png)",
       },
       backgroundSize: {
         "20px": "20px 20px",

@@ -77,3 +77,10 @@ export enum CreateBuildProgress {
     Done = 'Saved!',
     Error = 'Error',
 }
+export interface Build {
+    id: string;
+    components: Component[];
+    name: string | null;
+    created_at: string;
+    updated_at: string;
+}
