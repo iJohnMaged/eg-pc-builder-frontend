@@ -16,6 +16,7 @@ const ComponentCard = ({ component }: Props) => {
           src={component.image}
           alt={component.name}
           quality={100}
+          unoptimized={true}
         />
       </div>
       <div className="flex flex-col justify-between flex-grow p-4 m-auto text-center">
