@@ -35,14 +35,14 @@ const Header = () => {
 
   const headerWrapperClasses = classNames(
     {
-      "text-3xl": !shrink,
+      "xl:text-3xl md:text-base": !shrink,
       "text-xl bg-opacity-10": shrink,
       "py-2": !shrink,
       "py-1": shrink,
     },
     [
       // common
-      "fixed inset-x-0 top-0 z-50 bg-black text-white flex",
+      "fixed w-4/5 top-5 z-50 bg-black text-white flex translate-x-[50%] right-[50%] rounded-3xl",
       // Mobile
       "flex-col items-center justify-center transition-all px-0",
       // md
@@ -51,7 +51,7 @@ const Header = () => {
   );
 
   const headerLogoClasses = classNames(
-    "flex items-center justify-between px-8 font-bold w-full",
+    "flex items-center justify-between font-bold w-full",
     "md:w-auto md:block"
   );
 
