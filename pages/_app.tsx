@@ -15,7 +15,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         showOnShallow={true}
       />
       <Head>
-        <title>EG PC Builder</title>
+        <title>PC Builder</title>
       </Head>
       <div className="flex flex-col min-h-screen scroll-smooth font-Quicksand">
         <Header />

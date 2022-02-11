@@ -66,7 +66,6 @@ export default function NavBar(props: NavBarProps) {
         setSelectedTab={setSelectedTab}
         type={NavSelectedTab.About}
         selectedTab={selectedTab}
-        disabled
       />
     </nav>
   );

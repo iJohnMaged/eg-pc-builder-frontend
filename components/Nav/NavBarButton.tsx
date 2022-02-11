@@ -15,6 +15,8 @@ const TabToLink: {
 } = {
   [NavSelectedTab.Home]: "/",
   [NavSelectedTab.SimpleBuilder]: "/simple-builder",
+  [NavSelectedTab.About]: "/about",
+  [NavSelectedTab.None]: "/",
 };
 
 const NavBarButton = ({

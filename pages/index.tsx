@@ -32,8 +32,8 @@ export default function Home() {
           quality={100}
         />
       </div>
-      <div className="z-50 flex flex-col items-center gap-8 text-center text-white md:w-3/4 md:text-2xl">
-        <div className="text-2xl sm:leading-normal p-2 font-extrabold font-Dosis text-transparent bg-repeat-x bg-600% animate-animateBackground sm:text-5xl bg-clip-text bg-gradient-to-r from-emerald-300 via-yellow-500 to-red-600">
+      <div className="z-50 flex flex-col items-center gap-8 text-center text-white md:w-3/4">
+        <div className="text-2xl uppercase sm:leading-normal p-2 font-extrabold font-Dosis text-transparent bg-repeat-x bg-600% animate-animateBackground sm:text-4xl bg-clip-text bg-gradient-to-r from-emerald-300 via-yellow-500 to-red-600">
           Your number one destination for building your own <span>dream</span>{" "}
           PC from scratch with the prices available in the Egyptian market.
         </div>
