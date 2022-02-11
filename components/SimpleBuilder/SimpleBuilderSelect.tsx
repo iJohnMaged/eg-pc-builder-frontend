@@ -86,7 +86,7 @@ export default function SimpleBuilderSelect({ field }: Props) {
       >
         {field.name}{" "}
         {!isLoading && selected && (
-          <span className="italic text-purple-600 font-bolder">
+          <span className="italic text-yellow-400 font-bolder">
             ({selected.price} EGP)
           </span>
         )}

@@ -29,10 +29,31 @@ module.exports = {
             backgroundPosition: "100% 0%",
           },
         },
+        shake: {
+          "0%": {
+            transform: "rotate(0deg)",
+          },
+          "20%": {
+            transform: "rotate(4deg)",
+          },
+          "40%": {
+            transform: "rotate(-4deg)",
+          },
+          "60%": {
+            transform: "rotate(4deg)",
+          },
+          "80%": {
+            transform: "rotate(-4deg)",
+          },
+          "100%": {
+            transform: "rotate(0deg)",
+          },
+        },
       },
       animation: {
         animateBackground:
           "animateBackgroundKf 2s ease-in-out infinite alternate",
+        shake: "shake 500ms 3 ease-in-out forwards",
       },
     },
   },

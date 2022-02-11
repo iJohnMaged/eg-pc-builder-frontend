@@ -7,6 +7,10 @@ import SimpleBuilderContext from "../components/Context/BuilderContext";
 import { SimpleBuilderReducerState } from "../data/types";
 import getInitialFields from "../data/initialFields";
 
+import { ToastContainer } from "react-toastify";
+
+import "react-toastify/dist/ReactToastify.css";
+
 const SimpleBuilderPage = () => {
   const initialState: SimpleBuilderReducerState = {
     fields: getInitialFields(),
@@ -46,6 +50,7 @@ const SimpleBuilderPage = () => {
       >
         <SimpleBuilder />
       </SimpleBuilderContext.Provider>
+      <ToastContainer position="bottom-left" pauseOnFocusLoss={false} />
     </main>
   );
 };

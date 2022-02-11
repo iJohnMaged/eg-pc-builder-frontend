@@ -15,9 +15,9 @@ export default function CustomOption({ children, ...props }: Props) {
     <components.Option {...newProps}>
       <div className="flex items-center gap-x-2">
         <div className="flex-shrink-0 w-12 h-12 overflow-hidden rounded-lg">
-          {props.data.imageUrl && (
+          {props.data.image && (
             <Image
-              src={props.data.imageUrl}
+              src={props.data.image}
               width={48}
               height={48}
               alt={props.data.name}
@@ -26,7 +26,10 @@ export default function CustomOption({ children, ...props }: Props) {
           )}
         </div>
         <div className="break-all">
-          {props.data.name} - {props.data.price} EGP
+          <div>{props.data.name}</div>
+          <div className="italic font-bold text-yellow-400">
+            {props.data.price} EGP
+          </div>
         </div>
       </div>
     </components.Option>

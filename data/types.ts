@@ -10,13 +10,13 @@ export interface Store {
 }
 
 export interface Component {
-    id: string;
+    id: number;
     name: string;
-    category: string;
-    store: number;
-    price: number;
+    price: string;
     url: string;
-    imageUrl: string;
+    image: string;
+    store: Store;
+    category: Category;
 }
 
 export interface ComponentInput {
@@ -69,4 +69,11 @@ export enum NavSelectedTab {
 export interface SimpleBuilderContextType {
     state: SimpleBuilderReducerState;
     dispatch: React.Dispatch<SimpleBuilderReducerAction>;
+}
+
+export enum CreateBuildProgress {
+    Ready = 'Save',
+    Saving = 'Saving..',
+    Done = 'Saved!',
+    Error = 'Error',
 }
