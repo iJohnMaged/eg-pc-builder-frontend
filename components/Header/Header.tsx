@@ -36,14 +36,14 @@ const Header = () => {
   const headerWrapperClasses = classNames(
     {
       "xl:text-3xl md:text-base": !shrink,
-      "bg-opacity-10 text-sm xl:text-2xl": shrink,
+      "text-sm xl:text-2xl": shrink,
       "py-2": !shrink,
       "py-1": shrink,
       "px-2": true,
     },
     [
       // common
-      "fixed w-4/5 top-5 z-50 bg-black text-white flex translate-x-[50%] right-[50%] rounded-3xl",
+      "fixed w-4/5 top-5 z-50 bg-black text-white flex translate-x-[50%] right-[50%] rounded-3xl z-[100]",
       // Mobile
       "flex-col items-center justify-center transition-all px-0",
       // md
