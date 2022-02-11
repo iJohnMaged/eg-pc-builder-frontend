@@ -11,7 +11,7 @@ const ConfirmResetModal = (props: Props) => {
     return null;
   }
   return (
-    <div className="fixed inset-x-0 z-50 flex items-center justify-center overflow-x-hidden overflow-y-auto bg-black bg-opacity-50 top-4 md:inset-0 h-modal sm:h-full">
+    <div className="fixed inset-x-0 z-50 flex items-center justify-center overflow-x-hidden overflow-y-auto bg-black/50 top-4 md:inset-0 h-modal sm:h-full backdrop-blur-sm">
       <div className="relative w-full h-full max-w-md px-4 md:h-auto">
         <div className="relative bg-white border rounded-lg shadow-2xl border-neutral-400 border-opacity-60">
           <div className="flex justify-end p-2">
