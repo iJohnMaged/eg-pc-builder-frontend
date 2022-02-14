@@ -16,7 +16,11 @@ const fetcher = (url: string, field: ComponentInput, selected: SelectedComponent
 });
 
 function useOptionsData(field: ComponentInput, selected: SelectedComponent | null | undefined, cb: (selectedFromLocalStorage: SelectedComponent, options: Component[]) => SelectedComponent | null | undefined) {
-    const { data, error } = useSWR(`/api/parts-by-category?category=${field.dataField}`, url => fetcher(url, field, selected, cb));
+    const { data, error } = useSWR(`/api/parts-by-category?category=${field.dataField}`, url => fetcher(url, field, selected, cb), {
+        revalidateIfStale: false,
+        revalidateOnFocus: false,
+        revalidateOnReconnect: false
+    });
 
     return {
         data,
