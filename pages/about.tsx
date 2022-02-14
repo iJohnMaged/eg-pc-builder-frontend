@@ -2,7 +2,7 @@ import Image from "next/image";
 
 export default function aboutPage() {
   return (
-    <main className="flex items-center justify-center flex-grow py-4 bg-fixed bg-black bg-cover font-Dosis bg-pattern">
+    <main className="relative flex items-center justify-center flex-grow py-4 bg-fixed bg-white bg-cover font-Dosis bg-pattern dark:bg-neutral-900 dark:bg-pattern2">
       <div className="flex items-center w-4/5 max-w-3xl p-6 mx-auto mt-20 text-2xl bg-white border-4 border-black rounded-lg gap-y-4">
         <div className="relative flex-shrink-0 w-40 h-40 mr-10 overflow-hidden rounded-full">
           <Image

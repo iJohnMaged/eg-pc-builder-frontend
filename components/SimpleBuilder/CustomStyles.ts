@@ -2,6 +2,7 @@ const customStyles = {
     menu: (provided: any) => ({
         ...provided,
         background: "#1A1A1A",
+        margin: "10px 0px",
     }),
     dropdownIndicator: (provided: any, state: any) => ({
         ...provided,

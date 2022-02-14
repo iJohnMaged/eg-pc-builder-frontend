@@ -41,7 +41,7 @@ const SimpleBuilderPage = () => {
   }, []);
 
   return (
-    <main className="flex-grow py-4 bg-fixed bg-black bg-cover bg-pattern">
+    <main className="flex-grow py-4 bg-fixed bg-white bg-cover dark:bg-neutral-900 bg-pattern dark:bg-pattern2">
       <SimpleBuilderContext.Provider
         value={{
           state: state,

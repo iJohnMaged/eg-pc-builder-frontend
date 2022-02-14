@@ -37,7 +37,7 @@ const SaveButton = (props: Props) => {
   const { createBuildProgress, cb } = props;
 
   const classes = classNames({
-    "focus:ring-4 focus:ring-green-300 flex flex-shrink-0 items-center justify-center gap-3 px-16 py-2 text-sm font-bold text-white bg-emerald-500 rounded hover:bg-emerald-600 shadow-xl transition-all transform relative outline-none border-none":
+    "md:w-max w-full focus:ring-4 focus:ring-green-300 flex flex-shrink-0 items-center justify-center gap-3 px-16 py-2 text-sm font-bold text-white bg-emerald-500 rounded hover:bg-emerald-600 shadow-xl transition-all transform relative outline-none border-none":
       true,
     "cursor-not-allowed": createBuildProgress !== CreateBuildProgress.Ready,
     "bg-red-500 hover:bg-red-600 animate-shake focus:ring-red-300 cursor-not-allowed":

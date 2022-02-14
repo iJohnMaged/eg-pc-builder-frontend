@@ -90,13 +90,10 @@ export default function SimpleBuilderSelect({ field }: Props) {
 
   return (
     <div className="flex flex-col w-full gap-y-2">
-      <label
-        className="text-base font-semibold text-neutral-800"
-        htmlFor={uniqueId}
-      >
+      <label className="text-base font-semibold" htmlFor={uniqueId}>
         {field.name}{" "}
         {!isLoading && selected && (
-          <span className="italic text-yellow-400 font-bolder">
+          <span className="italic text-purple-400 font-bolder">
             ({selected.price} EGP)
           </span>
         )}
@@ -121,7 +118,7 @@ export default function SimpleBuilderSelect({ field }: Props) {
               isLoading={isLoading}
               components={{ Option: CustomOption }}
               menuPlacement="auto"
-              className="w-full text-sm font-bold"
+              className="w-full text-sm font-bold shadow"
               isClearable
             />
             {field.canAdd && <AddNewComponentIcon field={field} />}
@@ -133,7 +130,7 @@ export default function SimpleBuilderSelect({ field }: Props) {
                 href={selected.url}
                 target="_blank"
                 rel="noreferrer"
-                className="text-purple-500"
+                className="text-purple-300"
               >
                 {selected.url}
               </a>

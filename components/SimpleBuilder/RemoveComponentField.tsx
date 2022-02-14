@@ -11,7 +11,7 @@ const RemoveComponentField = (props: Props) => {
 
   return (
     <button
-      className="px-5 py-1 text-white bg-red-400 rounded-lg hover:bg-red-500"
+      className="w-full px-5 py-1 mt-2 text-white bg-red-500 rounded shadow-xl hover:bg-red-600 md:w-max md:mt-0"
       onClick={() => {
         dispatch({
           type: SimpleBuilderActionType.REMOVE_PART_FIELD,

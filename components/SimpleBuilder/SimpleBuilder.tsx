@@ -15,7 +15,9 @@ function SimpleBuilder() {
   const [createBuildProgress, setCreateBuildProgress] = useState(
     CreateBuildProgress.Ready
   );
-  const [buildUrl, setBuildUrl] = useState<string | null>(null);
+  const [buildUrl, setBuildUrl] = useState<string | null>(
+    "http://localhost:3000/build/175981e3-71e4-4950-9b83-0602df42a2cc"
+  );
 
   useEffect(() => {
     const total = Object.keys(state.selected).reduce((acc, key) => {
@@ -63,16 +65,10 @@ function SimpleBuilder() {
 
   return (
     <>
-      <div className="flex flex-col items-start w-4/5 max-w-3xl mx-auto mt-20 text-xl bg-white border-4 border-black rounded-lg gap-y-4">
-        <div className="flex items-center justify-between w-full gap-4 px-8 py-4 font-extrabold text-black border-b-4 border-black">
-          <div>Builder...</div>
-          <div className="flex flex-col justify-between w-full gap-1">
-            <div className="h-[4px] w-full bg-black rounded-full"></div>
-            <div className="h-[4px] w-full bg-black rounded-full"></div>
-            <div className="h-[4px] w-full bg-black rounded-full"></div>
-          </div>
+      <div className="flex flex-col items-start w-4/5 max-w-3xl mx-auto mt-20 text-xl text-black bg-white border border-neutral-700 rounded-lg dark:text-white dark:border-white/20 dark:bg-[#242526] gap-y-4">
+        <div className="flex flex-col items-center justify-between w-full gap-4 px-4 py-4 font-extrabold border-b md:flex-row border-neutral-700 dark:border-white/20">
           <button
-            className="px-4 py-2 text-sm font-bold text-white bg-red-500 rounded hover:bg-red-600"
+            className="relative flex items-center justify-center flex-shrink-0 w-full gap-3 px-16 py-2 text-sm font-bold text-white transition-all transform bg-red-500 border-none rounded shadow-xl outline-none focus:ring-4 focus:ring-red-300 hover:bg-red-600 md:w-max"
             onClick={() => setShowResetConfirmation(true)}
           >
             Reset
@@ -82,7 +78,7 @@ function SimpleBuilder() {
             cb={saveBuild}
           />
         </div>
-        <div className="flex flex-col w-full gap-4 px-2 pb-4 md:px-8">
+        <div className="flex flex-col w-full gap-4 px-4 pb-4 md:px-8">
           <BuildUrlWrapper buildUrl={buildUrl} />
           {state.fields.map((field) => (
             <SimpleBuilderSelect
@@ -91,7 +87,7 @@ function SimpleBuilder() {
             />
           ))}
           {totalPrice > 0 && (
-            <div className="mt-4 text-3xl font-bold text-center text-yellow-400">
+            <div className="mt-4 text-3xl font-bold text-center text-purple-400">
               Total Price: {totalPrice} EGP
             </div>
           )}
