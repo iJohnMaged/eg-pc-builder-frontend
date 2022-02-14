@@ -84,3 +84,8 @@ export interface Build {
     created_at: string;
     updated_at: string;
 }
+
+export interface GroupedOption {
+    label: string;
+    options: Component[];
+}

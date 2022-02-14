@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useState, CSSProperties } from "react";
 import Select, { ActionMeta, createFilter, OnChangeValue } from "react-select";
 import SimpleBuilderContext from "../Context/BuilderContext";
 import CustomOption from "./CustomSelectOption";
@@ -6,6 +6,7 @@ import {
   Component,
   ComponentInput,
   SimpleBuilderActionType,
+  GroupedOption,
 } from "../../data/types";
 import PlaceholderWithIcon from "./InputPlaceholder";
 import customStyles from "./CustomStyles";
@@ -16,6 +17,15 @@ import useOptionsData from "./useOptionsData";
 interface Props {
   field: ComponentInput;
 }
+
+const formatGroupLabel = (data: GroupedOption) => (
+  <div className="flex items-center justify-between mb-2">
+    <span className="text-xs italic">{data.label}</span>
+    <span className="bg-slate-200 rounded-3xl text-slate-800 inline-block text-xs min-w-[1px] px-2 py-0.5 text-center">
+      {data.options.length}
+    </span>
+  </div>
+);
 
 export default function SimpleBuilderSelect({ field }: Props) {
   const uniqueId = `${field.name}-${field.id}`;
@@ -120,6 +130,7 @@ export default function SimpleBuilderSelect({ field }: Props) {
               onChange={onChangeSelectedItem}
               isLoading={isLoading}
               components={{ Option: CustomOption }}
+              formatGroupLabel={formatGroupLabel}
               menuPlacement="auto"
               className="w-full text-sm font-bold shadow"
               isClearable
