@@ -1,10 +1,11 @@
-import { useContext, useState, CSSProperties } from "react";
+import { useContext, useState, useEffect } from "react";
 import Select, { ActionMeta, createFilter, OnChangeValue } from "react-select";
 import SimpleBuilderContext from "../Context/BuilderContext";
 import CustomOption from "./CustomSelectOption";
 import {
   Component,
   ComponentInput,
+  SelectedComponent,
   SimpleBuilderActionType,
   GroupedOption,
 } from "../../data/types";
@@ -27,51 +28,63 @@ const formatGroupLabel = (data: GroupedOption) => (
   </div>
 );
 
+const checkIfStillInOptions = (
+  selected: SelectedComponent,
+  options: Component[]
+) => {
+  const part = options.find((part: Component) => part.id === selected.id);
+  if (part) {
+    return selected;
+  }
+};
 export default function SimpleBuilderSelect({ field }: Props) {
   const uniqueId = `${field.name}-${field.id}`;
   const { state, dispatch } = useContext(SimpleBuilderContext);
-  const [selected, setSelected] = useState<Component | null | undefined>(
-    state.selected ? state.selected[uniqueId] : undefined
+  const [selected, setSelected] = useState<
+    SelectedComponent | null | undefined
+  >(state.selected ? state.selected[uniqueId] : undefined);
+
+  const { data, isLoading } = useOptionsData(
+    field,
+    selected,
+    checkIfStillInOptions
   );
 
-  const { options, isLoading } = useOptionsData(field.dataField);
-
+  useEffect(() => {
+    if (!data && isLoading) {
+      return;
+    }
+    if (
+      !isLoading &&
+      (!data || !data.defaultValue || data.defaultValue.fieldId !== field.id)
+    ) {
+      setSelected(null);
+    }
+  }, [data, isLoading, field]);
+  useEffect(() => {
+    if (selected === null || selected === undefined) {
+      dispatch({
+        type: SimpleBuilderActionType.REMOVE_COMPONENT,
+        payload: {
+          field,
+        },
+      });
+      return;
+    }
+    dispatch({
+      type: SimpleBuilderActionType.ADD_COMPONENT,
+      payload: {
+        field,
+        data: selected,
+      },
+    });
+  }, [selected, dispatch, field]);
   const getOptionLabel = (option: any) => {
     return `${option.name} - ${option.price} EGP`;
   };
 
   const getOptionValue = (option: any) => {
     return option.id;
-  };
-
-  const getSelectedItemFromOptions = () => {
-    if (!selected) {
-      return null;
-    }
-    if (!options) {
-      setSelected(null);
-      dispatch({
-        type: SimpleBuilderActionType.REMOVE_COMPONENT,
-        payload: {
-          field,
-        },
-      });
-      return null;
-    }
-    const selectedId = selected.id;
-    const part = options.parts.find(
-      (part: Component) => part.id === selectedId
-    );
-    if (!part) {
-      setSelected(null);
-      dispatch({
-        type: SimpleBuilderActionType.REMOVE_COMPONENT,
-        payload: {
-          field,
-        },
-      });
-    }
-    return part;
   };
 
   const onChangeSelectedItem = (
@@ -83,21 +96,8 @@ export default function SimpleBuilderSelect({ field }: Props) {
         return;
       }
       setSelected(newValue);
-      dispatch({
-        type: SimpleBuilderActionType.ADD_COMPONENT,
-        payload: {
-          field,
-          data: newValue,
-        },
-      });
     } else if (actionMeta.action === "clear") {
       setSelected(null);
-      dispatch({
-        type: SimpleBuilderActionType.REMOVE_COMPONENT,
-        payload: {
-          field,
-        },
-      });
     }
   };
 
@@ -115,42 +115,48 @@ export default function SimpleBuilderSelect({ field }: Props) {
       {isLoading ? (
         <div className="w-full h-6 rounded-full bg-neutral-100 animate-pulse"></div>
       ) : (
-        <>
-          <div className="flex flex-col items-center gap-x-4 md:flex-row">
-            <Select
-              filterOption={createFilter({ ignoreAccents: false })}
-              defaultValue={selected ? getSelectedItemFromOptions() : null}
-              inputId={uniqueId}
-              options={options ? options.parts : []}
-              instanceId={uniqueId}
-              styles={customStyles}
-              getOptionLabel={(option) => getOptionLabel(option)}
-              getOptionValue={(option) => getOptionValue(option)}
-              placeholder={<PlaceholderWithIcon field={field} />}
-              onChange={onChangeSelectedItem}
-              isLoading={isLoading}
-              components={{ Option: CustomOption }}
-              formatGroupLabel={formatGroupLabel}
-              menuPlacement="auto"
-              className="w-full text-sm font-bold shadow"
-              isClearable
-            />
-            {field.canAdd && <AddNewComponentIcon field={field} />}
-            {field.canRemove && <RemoveComponentField field={field} />}
-          </div>
-          {options && selected && (
-            <div className="text-xs italic max-w-[450px] text-ellipsis overflow-hidden whitespace-nowrap">
-              <a
-                href={selected.url}
-                target="_blank"
-                rel="noreferrer"
-                className="text-purple-300"
-              >
-                {selected.url}
-              </a>
+        data && (
+          <>
+            <div className="flex flex-col items-center gap-x-4 md:flex-row">
+              <Select
+                filterOption={createFilter({ ignoreAccents: false })}
+                defaultValue={
+                  data.defaultValue && data.defaultValue.fieldId === field.id
+                    ? data.defaultValue
+                    : null
+                }
+                inputId={uniqueId}
+                options={data ? data.data.parts : []}
+                instanceId={uniqueId}
+                styles={customStyles}
+                getOptionLabel={(option) => getOptionLabel(option)}
+                getOptionValue={(option) => getOptionValue(option)}
+                placeholder={<PlaceholderWithIcon field={field} />}
+                onChange={onChangeSelectedItem}
+                isLoading={isLoading}
+                components={{ Option: CustomOption }}
+                formatGroupLabel={formatGroupLabel}
+                menuPlacement="auto"
+                className="w-full text-sm font-bold shadow"
+                isClearable
+              />
+              {field.canAdd && <AddNewComponentIcon field={field} />}
+              {field.canRemove && <RemoveComponentField field={field} />}
             </div>
-          )}
-        </>
+            {data && selected && (
+              <div className="text-xs italic max-w-[450px] text-ellipsis overflow-hidden whitespace-nowrap">
+                <a
+                  href={selected.url}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="text-purple-300"
+                >
+                  {selected.url}
+                </a>
+              </div>
+            )}
+          </>
+        )
       )}
     </div>
   );

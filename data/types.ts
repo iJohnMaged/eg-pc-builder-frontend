@@ -19,6 +19,10 @@ export interface Component {
     category: Category;
 }
 
+export interface SelectedComponent extends Component {
+    fieldId?: string;
+}
+
 export interface ComponentInput {
     id: string;
     name: string;
@@ -37,7 +41,7 @@ export interface CategoriesComponents {
 }
 
 export interface SelectedComponents {
-    [key: string]: Component;
+    [key: string]: SelectedComponent;
 }
 
 export enum SimpleBuilderActionType {

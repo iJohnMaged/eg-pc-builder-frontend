@@ -49,11 +49,12 @@ const simpleBuilderReducer = (state: SimpleBuilderReducerState, action: SimpleBu
       {
         const { field, data } = action.payload;
         const keyToAdd = `${field.name}-${field.id}`;
+        const newData = { ...data, fieldId: field.id };
         const newState = {
           ...state,
           selected: {
             ...state.selected,
-            [keyToAdd]: data,
+            [keyToAdd]: newData,
           },
         }
         return saveToLocalStorage(newState);
