@@ -25,6 +25,9 @@ function SimpleBuilder() {
       return acc;
     }, 0);
     setTotalPrice(total);
+
+    setCreateBuildProgress(CreateBuildProgress.Ready);
+    setBuildUrl(null);
   }, [state.selected]);
 
   const saveBuild = async () => {

@@ -69,6 +69,9 @@ export default function SimpleBuilderSelect({ field }: Props) {
     actionMeta: ActionMeta<any>
   ) => {
     if (actionMeta.action === "select-option") {
+      if (selected && selected.id === newValue.id) {
+        return;
+      }
       setSelected(newValue);
       dispatch({
         type: SimpleBuilderActionType.ADD_COMPONENT,
