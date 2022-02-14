@@ -15,9 +15,7 @@ function SimpleBuilder() {
   const [createBuildProgress, setCreateBuildProgress] = useState(
     CreateBuildProgress.Ready
   );
-  const [buildUrl, setBuildUrl] = useState<string | null>(
-    "http://localhost:3000/build/175981e3-71e4-4950-9b83-0602df42a2cc"
-  );
+  const [buildUrl, setBuildUrl] = useState<string | null>(null);
 
   useEffect(() => {
     const total = Object.keys(state.selected).reduce((acc, key) => {

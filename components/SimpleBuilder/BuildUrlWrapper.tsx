@@ -71,18 +71,14 @@ const BuildUrlWrapper = (props: Props) => {
           <CopyIcon />
         </ButtonWithTooltip>
         <FacebookShareButton
-          url={
-            "https://eg-pc-builder-frontend.vercel.app/build/fed43fd7-3323-4673-9151-86fa6c00929c"
-          }
+          url={props.buildUrl}
           quote={`Check out this awesome build I made!`}
           hashtag="#pcbuilder"
         >
           <FacebookIcon size={24} round={true} />
         </FacebookShareButton>
         <RedditShareButton
-          url={
-            "https://eg-pc-builder-frontend.vercel.app/build/fed43fd7-3323-4673-9151-86fa6c00929c"
-          }
+          url={props.buildUrl}
           title="Check out this awesome build I made!"
         >
           <RedditIcon size={24} round={true} />
