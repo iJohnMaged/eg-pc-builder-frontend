@@ -2,9 +2,9 @@ import Image from "next/image";
 
 export default function aboutPage() {
   return (
-    <main className="flex-grow py-4 bg-fixed bg-zinc-900 font-Dosis flex items-center justify-center">
-      <div className="flex w-4/5 max-w-3xl mx-auto mt-20 text-2xl bg-white border-4 border-black rounded-lg gap-y-4 p-6 items-center">
-        <div className="relative rounded-full overflow-hidden w-40 h-40 flex-shrink-0 mr-10">
+    <main className="flex items-center justify-center flex-grow py-4 bg-fixed bg-black bg-cover font-Dosis bg-pattern">
+      <div className="flex items-center w-4/5 max-w-3xl p-6 mx-auto mt-20 text-2xl bg-white border-4 border-black rounded-lg gap-y-4">
+        <div className="relative flex-shrink-0 w-40 h-40 mr-10 overflow-hidden rounded-full">
           <Image
             src={"/john.png"}
             alt="John's head"
