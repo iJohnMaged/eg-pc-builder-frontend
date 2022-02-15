@@ -26,10 +26,13 @@ export const simpleBuilderInitializer = (initialState: SimpleBuilderReducerState
     if (localStorageDataRaw) {
       try {
         const localStorageData = JSON.parse(localStorageDataRaw);
-        // Remove ones not in data
-        return localStorageData;
+        return {
+          fields: localStorageData.fields,
+          selected: {},
+          cached: localStorageData.selected,
+        };
       } catch (e) {
-        return initialState
+        return initialState;
       }
     }
   }
@@ -38,7 +41,10 @@ export const simpleBuilderInitializer = (initialState: SimpleBuilderReducerState
 
 const saveToLocalStorage = (state: SimpleBuilderReducerState) => {
   if (typeof window !== 'undefined') {
-    localStorage.setItem("eg_simple_builder", JSON.stringify(state));
+    localStorage.setItem("eg_simple_builder", JSON.stringify({
+      fields: state.fields,
+      selected: state.selected,
+    }));
   }
   return state;
 };

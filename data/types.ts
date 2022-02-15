@@ -55,6 +55,7 @@ export enum SimpleBuilderActionType {
 export interface SimpleBuilderReducerState {
     fields: ComponentInput[];
     selected: SelectedComponents;
+    cached?: SelectedComponents;
 }
 
 export interface SimpleBuilderReducerAction {
@@ -92,4 +93,8 @@ export interface Build {
 export interface GroupedOption {
     label: string;
     options: Component[];
+}
+
+export interface swrData {
+    parts: GroupedOption[];
 }

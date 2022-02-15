@@ -1,6 +1,6 @@
 import dynamic from "next/dynamic";
 import { useContext, useState, useEffect } from "react";
-import SimpleBuilderSelect from "./SimpleBuilderSelect";
+import ComponentSelector from "./ComponentSelector";
 import SimpleBuilderContext from "../Context/BuilderContext";
 import ConfirmResetModal from "../Modal/ConfirmResetModal";
 import { SimpleBuilderActionType, CreateBuildProgress } from "../../data/types";
@@ -82,7 +82,7 @@ function SimpleBuilder() {
         <div className="flex flex-col w-full gap-4 px-4 pb-4 md:px-8">
           <BuildUrlWrapper buildUrl={buildUrl} />
           {state.fields.map((field) => (
-            <SimpleBuilderSelect
+            <ComponentSelector
               field={field}
               key={`${field.name}-${field.id}`}
             />
